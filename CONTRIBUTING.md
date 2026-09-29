@@ -124,7 +124,7 @@ Congratulations on completing the ..., here are a few directions you can explore
 
 3. **...and many more!** — Other suggestions ....
 
-For more resources and tutorials, check out the [PINA Documentation](https://mathlab.github.io/PINA/).
+For more resources and tutorials, check out the [PINA Documentation](https://PINA-org.github.io/PINA/).
 ```
 
 ## Writing style

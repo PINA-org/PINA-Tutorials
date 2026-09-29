@@ -13,4 +13,3 @@ This PR closes #ISSUE_NUMBER.
 - [ ] The entry has been added to `README.md`, in the right section
 - [ ] Any new dataset or image is committed, and is referenced by URL pointing
       at this repository
-- [ ] External links were checked (no `mathLab/PINA/.../tutorials/` paths remain)

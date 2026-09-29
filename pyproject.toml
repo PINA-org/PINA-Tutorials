@@ -19,8 +19,8 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://mathlab.github.io/PINA/"
-Tutorials = "https://mathlab.github.io/PINA/_tutorial.html"
+Homepage = "https://PINA-org.github.io/PINA/"
+Tutorials = "https://PINA-org.github.io/PINA-Tutorials/"
 Repository = "https://github.com/PINA-org/PINA-tutorials"
 "PINA (library)" = "https://github.com/PINA-org/PINA"
 
