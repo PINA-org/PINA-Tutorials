@@ -3,7 +3,7 @@
 
 # # Tutorial: Applying Periodic Boundary Conditions in PINNs to solve the Helmholtz Problem
 # 
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mathLab/PINA/blob/master/tutorials/tutorial9/tutorial.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial9/tutorial.ipynb)
 # 
 # This tutorial demonstrates how to solve a one-dimensional Helmholtz equation with periodic boundary conditions (PBC) using Physics-Informed Neural Networks (PINNs).  
 # We will use standard Physics-Informed training, augmented with a periodic input expansion as introduced in [*An Expert’s Guide to Training Physics-Informed Neural Networks*](https://arxiv.org/abs/2308.08468).

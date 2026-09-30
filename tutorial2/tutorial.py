@@ -3,7 +3,7 @@
 
 # # Tutorial: Enhancing PINNs with Extra Features to solve the Poisson Problem
 #
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mathLab/PINA/blob/master/tutorials/tutorial2/tutorial.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial2/tutorial.ipynb)
 #
 # This tutorial presents how to solve with Physics-Informed Neural Networks (PINNs) a 2D Poisson problem with Dirichlet boundary conditions. We will train with standard PINN's training, and with extrafeatures. For more insights on extrafeature learning please read [*An extended physics informed neural network for preliminary analysis of parametric optimal control problems*](https://www.sciencedirect.com/science/article/abs/pii/S0898122123002018).
 #
@@ -46,7 +46,7 @@ warnings.filterwarnings("ignore")
 # where $D$ is a square domain $[0,1]^2$, and $\Gamma_i$, with $i=1,...,4$, are the boundaries of the square.
 #
 # The Poisson problem is written in **PINA** code as a class. The equations are written as *conditions* that should be satisfied in the corresponding domains. The *solution*
-# is the exact solution which will be compared with the predicted one. If interested in how to write problems see [this tutorial](https://mathlab.github.io/PINA/_rst/tutorials/tutorial16/tutorial.html).
+# is the exact solution which will be compared with the predicted one. If interested in how to write problems see [this tutorial](https://mathlab.github.io/PINA/tutorial16/tutorial.html).
 #
 # We will directly import the problem from `pina.problem.zoo`, which contains a vast list of PINN problems and more.
 

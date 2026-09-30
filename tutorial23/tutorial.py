@@ -3,7 +3,7 @@
 
 # # Tutorial: Data-driven System Identification with SINDy
 #
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mathLab/PINA/blob/master/tutorials/tutorial23/tutorial.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial23/tutorial.ipynb)
 #
 #
 # > ##### ⚠️ ***Before starting:***

@@ -3,7 +3,7 @@
 
 # # Tutorial: Advection Equation with data driven DeepONet
 #
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mathLab/PINA/blob/master/tutorials/tutorial24/tutorial.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial24/tutorial.ipynb)
 #
 #
 # > ##### ⚠️ ***Before starting:***
@@ -28,16 +28,16 @@ if IN_COLAB:
     # get the data
     get_ipython().system('mkdir "data"')
     get_ipython().system(
-        'wget "https://github.com/mathLab/PINA/raw/refs/heads/master/tutorials/tutorial24/data/advection_input_testing.pt" -O "data/advection_input_testing.pt"'
+        'wget "https://github.com/PINA-org/PINA-tutorials/raw/refs/heads/main/tutorial24/data/advection_input_testing.pt" -O "data/advection_input_testing.pt"'
     )
     get_ipython().system(
-        'wget "https://github.com/mathLab/PINA/raw/refs/heads/master/tutorials/tutorial24/data/advection_input_training.pt" -O "data/advection_input_training.pt"'
+        'wget "https://github.com/PINA-org/PINA-tutorials/raw/refs/heads/main/tutorial24/data/advection_input_training.pt" -O "data/advection_input_training.pt"'
     )
     get_ipython().system(
-        'wget "https://github.com/mathLab/PINA/raw/refs/heads/master/tutorials/tutorial24/data/advection_output_testing.pt" -O "data/advection_output_testing.pt"'
+        'wget "https://github.com/PINA-org/PINA-tutorials/raw/refs/heads/main/tutorial24/data/advection_output_testing.pt" -O "data/advection_output_testing.pt"'
     )
     get_ipython().system(
-        'wget "https://github.com/mathLab/PINA/raw/refs/heads/master/tutorials/tutorial24/data/advection_output_training.pt" -O "data/advection_output_training.pt"'
+        'wget "https://github.com/PINA-org/PINA-tutorials/raw/refs/heads/main/tutorial24/data/advection_output_training.pt" -O "data/advection_output_training.pt"'
     )
 
 import matplotlib.pyplot as plt
@@ -135,7 +135,7 @@ for idx, i in enumerate(torch.randint(0, data_0_training.shape[0] - 1, (3,))):
 # The standard `DeepONet` architecture consists of two subnetworks: a **branch** network and a **trunk** network (see figure below).
 #
 # <center>
-# <img src="http://raw.githubusercontent.com/mathLab/PINA/master/tutorials/static/deeponet.png" alt="image from: Moya, C.; Lin, G. Fed-DeepONet: Stochastic Gradient-Based Federated Training of Deep Operator Networks. Algorithms 2022, 15, 325. https://doi.org/10.3390/a15090325" style="width:50%; height:50%;"/>
+# <img src="https://raw.githubusercontent.com/PINA-org/PINA-tutorials/main/static/deeponet.png" alt="image from: Moya, C.; Lin, G. Fed-DeepONet: Stochastic Gradient-Based Federated Training of Deep Operator Networks. Algorithms 2022, 15, 325. https://doi.org/10.3390/a15090325" style="width:50%; height:50%;"/>
 # </center>
 # <center>
 # <i>Image source: Moya & Lin (2022)</i>

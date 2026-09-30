@@ -3,7 +3,7 @@
 
 # # Tutorial: Building domains with PINA's `BaseDomain` class
 #
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mathLab/PINA/blob/master/tutorials/tutorial6/tutorial.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial6/tutorial.ipynb)
 #
 # In this tutorial, we explore how to use and visualize PINA’s built-in geometric domains and how to construct custom ones. We will cover:
 # - Creating domains using `CartesianDomain`, `EllipsoidDomain`, and `SimplexDomain`

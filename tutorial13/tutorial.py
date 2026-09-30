@@ -3,7 +3,7 @@
 
 # # Tutorial: Learning Multiscale PDEs Using Fourier Feature Networks
 # 
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mathLab/PINA/blob/master/tutorials/tutorial13/tutorial.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial13/tutorial.ipynb)
 # 
 # This tutorial demonstrates how to solve a PDE with multiscale behavior using Physics-Informed Neural Networks (PINNs), as discussed in [*On the Eigenvector Bias of Fourier Feature Networks: From Regression to Solving Multi-Scale PDEs with Physics-Informed Neural Networks*](https://doi.org/10.1016/j.cma.2021.113938).
 # 

@@ -3,7 +3,7 @@
 
 # # Tutorial: How to build a Problem in PINA
 # 
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mathLab/PINA/blob/master/tutorials/tutorial16/tutorial.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial16/tutorial.ipynb)
 # 
 
 # In this tutorial, we will demonstrate how to build a **Problem** in **PINA** using a toy example. The tutorial will cover the following topics:

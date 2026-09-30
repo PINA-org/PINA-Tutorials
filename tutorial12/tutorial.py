@@ -3,7 +3,7 @@
 
 # # Tutorial: Introduction to PINA `Equation` class
 #
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mathLab/PINA/blob/master/tutorials/tutorial12/tutorial.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial12/tutorial.ipynb)
 #
 #
 # In this tutorial, we will explore how to use the `Equation` class in **PINA**. We will focus on how to leverage this class, along with its inherited subclasses, to enforce residual minimization in **Physics-Informed Neural Networks (PINNs)**.

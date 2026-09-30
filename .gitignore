@@ -1,0 +1,18 @@
+# Notebook and execution artefacts
+.ipynb_checkpoints/
+build/
+nbconvert*.log
+
+# Training logs written by Lightning during local runs
+tutorial_logs/
+**tutorial_logs
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db

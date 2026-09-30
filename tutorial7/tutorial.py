@@ -3,7 +3,7 @@
 
 # # Tutorial: Inverse Problem Solving with Physics-Informed Neural Network
 #
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mathLab/PINA/blob/master/tutorials/tutorial7/tutorial.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial7/tutorial.ipynb)
 #
 # ## Introduction to the Inverse Problem
 #
@@ -46,10 +46,10 @@ if IN_COLAB:
     # get the data
     get_ipython().system('mkdir "data"')
     get_ipython().system(
-        'wget "https://github.com/mathLab/PINA/raw/refs/heads/master/tutorials/tutorial7/data/pinn_solution_0.5_0.5" -O "data/pinn_solution_0.5_0.5"'
+        'wget "https://github.com/PINA-org/PINA-tutorials/raw/refs/heads/main/tutorial7/data/pinn_solution_0.5_0.5" -O "data/pinn_solution_0.5_0.5"'
     )
     get_ipython().system(
-        'wget "https://github.com/mathLab/PINA/raw/refs/heads/master/tutorials/tutorial7/data/pts_0.5_0.5" -O "data/pts_0.5_0.5"'
+        'wget "https://github.com/PINA-org/PINA-tutorials/raw/refs/heads/main/tutorial7/data/pts_0.5_0.5" -O "data/pts_0.5_0.5"'
     )
 
 import matplotlib.pyplot as plt

@@ -1,0 +1,248 @@
+name: "Export Tutorials"
+
+on:
+  workflow_dispatch:
+    inputs:
+      pina_ref:
+        description: "PINA ref to test the tutorials against (branch, tag or SHA)"
+        required: false
+        default: "master"
+      full_rebuild:
+        description: "Re-execute every tutorial instead of only the changed ones"
+        type: boolean
+        required: false
+        default: false
+  push:
+    branches:
+      - "main"
+    paths:
+      - 'tutorial*/**/*.ipynb'
+  schedule:
+    # Nightly. Catches regressions in the PINA package that break a tutorial
+    # without any notebook having changed.
+    - cron: '30 3 * * *'
+  workflow_call:
+    inputs:
+      pina_ref:
+        description: "PINA ref to test the tutorials against"
+        required: false
+        default: "master"
+
+concurrency:
+  group: export-tutorials-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  # Per-notebook execution budget.
+  TUTORIAL_TIMEOUT: 1200
+  # Slightly larger than the per-cell budget: a hard backstop for a notebook
+  # that wedges outside a single cell (download, data loader, ...).
+  NOTEBOOK_TIMEOUT: 1500
+  PINA_REPO: PINA-org/PINA
+  BUILD_DIR: build
+
+jobs:
+  export:
+    name: export notebooks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        # Full history so the before/after diff of a push is available.
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Setup FFmpeg
+      uses: FedericoCarboni/setup-ffmpeg@v2
+
+    - name: Resolve configuration
+      id: config
+      run: |
+        set -euo pipefail
+        REF="${{ inputs.pina_ref || 'master' }}"
+        echo "pina_ref=$REF" >> "$GITHUB_OUTPUT"
+        echo "Testing tutorials against $PINA_REPO@$REF"
+        echo "  documentation pins: https://github.com/$PINA_REPO/blob/master/docs/tutorials_ref"
+
+    - name: Install dependencies
+      run: |
+        set -euo pipefail
+        python3 -m pip install --upgrade pip
+        # PINA comes from a git ref, not from this repository: the tutorials
+        # are the consumer here, so they must be exercised against a real
+        # PINA install rather than a local checkout.
+        python3 -m pip install "pina-mathlab[tutorial] @ git+https://github.com/$PINA_REPO@${{ steps.config.outputs.pina_ref }}"
+        python3 -m pip install ".[exporter]"
+        python3 -m pip list 2>/dev/null | grep -Ei "pina-mathlab|torch |lightning|nbconvert|black" || true
+
+    - name: Report tested PINA version
+      id: pina
+      run: |
+        set -euo pipefail
+        VER=$(python -c "import importlib.metadata as m; print(m.version('pina-mathlab'))")
+        echo "pina_version=$VER" >> "$GITHUB_OUTPUT"
+        echo "Testing against pina-mathlab $VER"
+
+    - name: Select notebooks
+      id: files
+      run: |
+        set -euo pipefail
+        ALL=$(find tutorial* -type f -name '*.ipynb' | sort)
+
+        if [ "${{ inputs.full_rebuild }}" = "true" ]; then
+          FILES="$ALL"
+          echo "Full rebuild requested: $ALL" | wc -l | xargs echo "notebooks:"
+        elif [ "${{ github.event_name }}" = "push" ]; then
+          BEFORE="${{ github.event.before }}"
+          if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            FILES="$ALL"
+          else
+            FILES=$(git diff --name-only --diff-filter=ACMR "$BEFORE" "$GITHUB_SHA" \
+                    -- 'tutorial*/*.ipynb' || true)
+          fi
+        else
+          FILES="$ALL"
+        fi
+
+        if [ -z "$FILES" ]; then
+          echo "No notebooks to export."
+          FILES=""
+        else
+          echo "$FILES"
+          echo "$FILES" | wc -l | xargs echo "notebooks:"
+        fi
+        echo "files<<EOF" >> "$GITHUB_OUTPUT"
+        echo "$FILES" >> "$GITHUB_OUTPUT"
+        echo "EOF" >> "$GITHUB_OUTPUT"
+
+    - name: Configure git
+      run: |
+        set -euo pipefail
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+    - name: Run formatter
+      # Formats the notebooks in place and keeps the committed notebook and
+      # the exported .py in sync with it.
+      run: |
+        set -euo pipefail
+        FILES="${{ steps.files.outputs.files }}"
+        if [ -n "$FILES" ]; then
+          # shellcheck disable=SC2086
+          python3 -m black $FILES
+        fi
+        python3 -m black --check . || {
+          echo "::error::black would reformat files outside the exported notebooks."
+          exit 1
+        }
+
+    - name: Export notebooks to .py
+      run: |
+        set -euo pipefail
+        FILES="${{ steps.files.outputs.files }}"
+        [ -n "$FILES" ] || exit 0
+        for file in $FILES; do
+          dir=$(dirname "$file")
+          echo "-> $dir/tutorial.py"
+          python3 -Xfrozen_modules=off -m jupyter nbconvert "$file" \
+            --to python --output tutorial.py --output-dir "$dir"
+        done
+
+    - name: Execute notebooks into ${{ env.BUILD_DIR }}
+      run: |
+        set -euo pipefail
+        FILES="${{ steps.files.outputs.files }}"
+        [ -n "$FILES" ] || exit 0
+
+        rm -rf "$BUILD_DIR"
+        mkdir -p "$BUILD_DIR"
+
+        # Executing a *copy* keeps the committed notebooks output-free: the
+        # source of truth stays small and diff-friendly, while the rendered
+        # documentation gets a fully executed page.
+        for file in $FILES; do
+          dir=$(dirname "$file")
+          name=$(basename "$dir")
+          mkdir -p "$BUILD_DIR/$name"
+          cp "$file" "$BUILD_DIR/$name/tutorial.ipynb"
+
+          echo "::group::executing $name"
+          set +e
+          timeout --signal=SIGKILL "$NOTEBOOK_TIMEOUT" \
+            python3 -Xfrozen_modules=off -m jupyter nbconvert \
+              "$BUILD_DIR/$name/tutorial.ipynb" \
+              --to notebook --execute --inplace \
+              --ExecutePreprocessor.kernel_name=python3 \
+              --ExecutePreprocessor.timeout="$TUTORIAL_TIMEOUT"
+          status=$?
+          set -e
+          echo "::endgroup::"
+
+          if [ $status -ne 0 ]; then
+            echo "::error::$name failed to execute (exit $status). The documentation build will not be updated with it."
+            exit $status
+          fi
+        done
+
+    - name: Publish executed notebooks to the built branch
+      if: steps.files.outputs.files != ''
+      run: |
+        set -euo pipefail
+
+        # Record what this snapshot was built from, so the documentation
+        # repository can pin an immutable ref and report the version.
+        cat > "$BUILD_DIR/meta.json" <<EOF
+        {
+          "pina_ref": "${{ steps.config.outputs.pina_ref }}",
+          "pina_version": "${{ steps.pina.outputs.pina_version }}",
+          "built_from": "$GITHUB_SHA",
+          "built_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+          "run": "$GITHUB_RUN_ID"
+        }
+        EOF
+        sed -i 's/^        //' "$BUILD_DIR/meta.json"
+
+        # 'built' is an artefact branch: a self-contained snapshot, force
+        # pushed. Consumers pin the tag below, never the branch.
+        rm -rf "$BUILD_DIR/.git"
+        git -C "$BUILD_DIR" init -q
+        git -C "$BUILD_DIR" config user.name "github-actions[bot]"
+        git -C "$BUILD_DIR" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git -C "$BUILD_DIR" add -A
+        git -C "$BUILD_DIR" commit -q -m "executed tutorials for pina-mathlab ${{ steps.pina.outputs.pina_version }}"
+        git -C "$BUILD_DIR" push -f \
+          "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" \
+          HEAD:refs/heads/built
+
+        TAG="pina-${{ steps.pina.outputs.pina_version }}-${{ github.run_id }}"
+        git -C "$BUILD_DIR" tag -f "$TAG"
+        git -C "$BUILD_DIR" push -f \
+          "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" \
+          "refs/tags/$TAG"
+        echo "Published snapshot as branch 'built' and tag '$TAG'"
+
+    - name: Remove unwanted files
+      if: always()
+      run: rm -rf build/
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v6.0.0
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        labels: maintenance
+        title: "Export tutorials in ${{ github.sha }}"
+        branch: export-tutorial-${{ github.run_id }}
+        base: ${{ github.ref_name }}
+        commit-message: "export tutorials changed in ${{ github.sha }}"
+        delete-branch: true
+        add-paths: |
+          tutorial*/
+          README.md

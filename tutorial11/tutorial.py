@@ -2,7 +2,7 @@
 # coding: utf-8
 
 # # Tutorial: Introduction to `Trainer` class
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mathLab/PINA/blob/master/tutorials/tutorial11/tutorial.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial11/tutorial.ipynb)
 # 
 # In this tutorial, we will delve deeper into the functionality of the `Trainer` class, which serves as the cornerstone for training **PINA** [Solvers](https://mathlab.github.io/PINA/_rst/_code.html#solvers). 
 # 
@@ -92,7 +92,7 @@ trainer = Trainer(solver=solver, accelerator="cpu")
 
 # ## Trainer Logging
 # 
-# In **PINA** you can log metrics in different ways. The simplest approach is to use the `MetricTracker` class from `pina.callback`, as seen in the [*Introduction to Physics Informed Neural Networks training*](https://github.com/mathLab/PINA/blob/master/tutorials/tutorial1/tutorial.ipynb) tutorial.
+# In **PINA** you can log metrics in different ways. The simplest approach is to use the `MetricTracker` class from `pina.callback`, as seen in the [*Introduction to Physics Informed Neural Networks training*](https://github.com/PINA-org/PINA-tutorials/blob/main/tutorial1/tutorial.ipynb) tutorial.
 # 
 # However, especially when we need to train multiple times to get an average of the loss across multiple runs, `lightning.pytorch.loggers` might be useful. Here we will use `TensorBoardLogger` (more on [logging](https://lightning.ai/docs/pytorch/stable/extensions/logging.html) here), but you can choose the one you prefer (or make your own one).
 # 
@@ -129,7 +129,7 @@ for _ in range(3):
 # We can now visualize the logs by simply running `tensorboard --logdir=training_log/` in the terminal. You should obtain a webpage similar to the one shown below if running for 1000 epochs:
 
 # <p align=\"center\">
-#     <img src="http://raw.githubusercontent.com/mathLab/PINA/master/tutorials/static/logging.png" alt=\"Logging API\" width=\"400\"/>
+#     <img src="https://raw.githubusercontent.com/PINA-org/PINA-tutorials/main/static/logging.png" alt=\"Logging API\" width=\"400\"/>
 # </p>
 
 # As you can see, by default, **PINA** logs the losses which are shown in the progress bar, as well as the number of epochs. You can always insert more loggings by either defining a **callback** ([more on callbacks](https://lightning.ai/docs/pytorch/stable/extensions/callbacks.html)), or inheriting the solver and modifying the programs with different **hooks** ([more on hooks](https://lightning.ai/docs/pytorch/stable/common/lightning_module.html#hooks)).

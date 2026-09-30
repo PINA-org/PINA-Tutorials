@@ -3,7 +3,7 @@
 
 # # Tutorial: Modeling 2D Darcy Flow with the Fourier Neural Operator
 #
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mathLab/PINA/blob/master/tutorials/tutorial5/tutorial.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial5/tutorial.ipynb)
 #
 # In this tutorial, we are going to solve the **Darcy flow problem** in two dimensions, as presented in the paper [*Fourier Neural Operator for Parametric Partial Differential Equations*](https://openreview.net/pdf?id=c8P9NQVtmnO).
 #
@@ -25,7 +25,7 @@ if IN_COLAB:
     get_ipython().system("pip install scipy")
     # get the data
     get_ipython().system(
-        "wget https://github.com/mathLab/PINA/raw/refs/heads/master/tutorials/tutorial5/Data_Darcy.mat"
+        "wget https://github.com/PINA-org/PINA-tutorials/raw/refs/heads/main/tutorial5/Data_Darcy.mat"
     )
 
 import torch

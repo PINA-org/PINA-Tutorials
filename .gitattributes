@@ -1,0 +1,7 @@
+# Notebooks are not application code: keep them out of the language statistics.
+tutorial*/** linguist-vendored=true
+
+# Data files are binary, not text.
+*.pt binary
+*.mat binary
+*.png binary

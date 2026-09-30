@@ -3,7 +3,7 @@
 
 # # Tutorial: Learning Bifurcating PDE Solutions with Physics-Informed Deep Ensembles
 # 
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mathLab/PINA/blob/master/tutorials/tutorial14/tutorial.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial14/tutorial.ipynb)
 # 
 # This tutorial demonstrates how to use the Deep Ensemble Physics Informed Network (DeepEnsemblePINN) to learn PDEs exhibiting bifurcating behavior, as discussed in [*Learning and Discovering Multiple Solutions Using Physics-Informed Neural Networks with Random Initialization and Deep Ensemble*](https://arxiv.org/abs/2503.06320).
 # 
@@ -47,7 +47,7 @@ warnings.filterwarnings("ignore")
 # This approach allows the ensemble to capture different perspectives of the problem, leading to more accurate and reliable predictions.
 # 
 # <p align="center">
-#     <img src="http://raw.githubusercontent.com/mathLab/PINA/master/tutorials/static/deep_ensemble.png" alt="Deep ensemble" width="600"/>
+#     <img src="https://raw.githubusercontent.com/PINA-org/PINA-tutorials/main/static/deep_ensemble.png" alt="Deep ensemble" width="600"/>
 # </p>
 # 
 # The image above illustrates an Ensemble setup, where multiple models attempt to predict the text from an image. While individual models may make errors (e.g., predicting "PONY" instead of "PINA"), combining their outputs—such as taking the majority vote—often leads to the correct result. This ensemble effect improves reliability by mitigating the impact of individual model biases.

@@ -3,7 +3,7 @@
 
 # # Tutorial: Introductory Tutorial: Neural Operator Learning with PINA
 #
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mathLab/PINA/blob/master/tutorials/tutorial21/tutorial.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial21/tutorial.ipynb)
 #
 #
 # > ##### ⚠️ ***Before starting:***
@@ -126,7 +126,7 @@ plt.grid(True)
 # At their core, **Neural Operators** transform an input function $a$ into an output function $u$. The general structure of a Neural Operator consists of three key components:
 #
 # <p align="center">
-#     <img src="http://raw.githubusercontent.com/mathLab/PINA/master/tutorials/static/neural_operator.png" alt="Neural Operators" width="800"/>
+#     <img src="https://raw.githubusercontent.com/PINA-org/PINA-tutorials/main/static/neural_operator.png" alt="Neural Operators" width="800"/>
 # </p>
 #
 # 1. **Encoder**: The encoder maps the input into a specific embedding space.
@@ -238,7 +238,7 @@ model = KernelNeuralOperator(
 #
 # > **👉 We have a dedicated [tutorial](https://mathlab.github.io/PINA/tutorial16/tutorial.html) to teach how to build a Problem from scratch — have a look if you're interested!**
 #
-# > **👉 We have a dedicated [tutorial](http://mathlab.github.io/PINA/_rst/tutorials/tutorial18/tutorial.html) for an overview of Solvers in PINA — have a look if you're interested!**
+# > **👉 We have a dedicated [tutorial](https://mathlab.github.io/PINA/tutorial18/tutorial.html) for an overview of Solvers in PINA — have a look if you're interested!**
 
 # In[ ]:
 

@@ -3,7 +3,7 @@
 
 # # Tutorial: Introductory Tutorial: A Beginner’s Guide to PINA
 #
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mathLab/PINA/blob/master/tutorials/tutorial17/tutorial.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial17/tutorial.ipynb)
 #
 # <p align="left">
 #     <img src="https://raw.githubusercontent.com/mathLab/PINA/master/readme/pina_logo.png" alt="PINA logo" width="90"/>
@@ -30,7 +30,7 @@
 # ## The PINA Workflow
 #
 # <p align="center">
-#     <img src="http://raw.githubusercontent.com/mathLab/PINA/master/tutorials/static/pina_workflow.png" alt="PINA Workflow" width="1000"/>
+#     <img src="https://raw.githubusercontent.com/PINA-org/PINA-tutorials/main/static/pina_workflow.png" alt="PINA Workflow" width="1000"/>
 # </p>
 #
 # Solving a differential problem in **PINA** involves four main steps:
@@ -290,7 +290,7 @@ plt.show()
 #
 # PINA allows you to build complex geometries easily. It provides many built-in domain shapes and Boolean operators for combining them. For this problem, we will define the hourglass-shaped domain using the existing `CartesianDomain` and `EllipsoidDomain` classes, with Boolean operators like `Difference` and `Union`.
 #
-# > **👉 If you are interested in exploring the `domain` module in more detail, check out [this tutorial](https://mathlab.github.io/PINA/_rst/tutorials/tutorial6/tutorial.html).**
+# > **👉 If you are interested in exploring the `domain` module in more detail, check out [this tutorial](https://mathlab.github.io/PINA/tutorial6/tutorial.html).**
 #
 
 # In[6]:
@@ -399,7 +399,7 @@ poisson_problem = Poisson()
 # - We inherit from **`SpatialProblem`** instead of `AbstractProblem` to account for spatial variables.
 # - We use **`domain`** and **`equation`** inside the `Condition` to define the problem.
 #
-# The `Equation` class can be very useful for creating modular problem classes. If you're interested, check out [this tutorial](https://mathlab.github.io/PINA/_rst/tutorial12/tutorial.html) for more details. There's also a dedicated [tutorial](https://mathlab.github.io/PINA/_rst/tutorial16/tutorial.html) for building custom problems!
+# The `Equation` class can be very useful for creating modular problem classes. If you're interested, check out [this tutorial](https://mathlab.github.io/PINA/tutorial12/tutorial.html) for more details. There's also a dedicated [tutorial](https://mathlab.github.io/PINA/tutorial16/tutorial.html) for building custom problems!
 #
 # Once the problem class is set, we need to **sample the domain** to obtain the data. PINA will automatically handle this, and if you forget to sample, an error will be raised before training begins 😉.
 
@@ -462,7 +462,7 @@ model = FeedForward(
 #
 # To track metrics during training, we use the **`MetricTracker`** class.
 #
-# > **👉 Want to know more about `Trainer` and how to boost PINA performance, check out [this tutorial](https://mathlab.github.io/PINA/_rst/tutorials/tutorial11/tutorial.html).**
+# > **👉 Want to know more about `Trainer` and how to boost PINA performance, check out [this tutorial](https://mathlab.github.io/PINA/tutorial11/tutorial.html).**
 
 # In[ ]:
 

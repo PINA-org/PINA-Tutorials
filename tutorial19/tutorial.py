@@ -3,7 +3,7 @@
 
 # # Tutorial: Data structure for SciML: `Tensor`, `LabelTensor`, `Data` and `Graph`
 #
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mathLab/PINA/blob/master/tutorials/tutorial19/tutorial.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial19/tutorial.ipynb)
 #
 # In this tutorial, we’ll quickly go through the basics of Data Structures for Scientific Machine Learning, convering:
 # 1. **PyTorch Tensors** / **PINA LabelTensors**

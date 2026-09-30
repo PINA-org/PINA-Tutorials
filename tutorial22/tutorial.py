@@ -3,7 +3,7 @@
 
 # # Tutorial: Reduced Order Model with Graph Neural Networks
 # 
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mathLab/PINA/blob/master/tutorials/tutorial22/tutorial.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial22/tutorial.ipynb)
 # 
 # 
 # > ##### ⚠️ ***Before starting:***
@@ -32,7 +32,7 @@ except:
     IN_COLAB = False
 if IN_COLAB:
     get_ipython().system('pip install "pina-mathlab[tutorial]"')
-    get_ipython().system('wget "https://github.com/mathLab/PINA/raw/refs/heads/master/tutorials/tutorial22/holed_poisson.pt" -O "holed_poisson.pt"')
+    get_ipython().system('wget "https://github.com/PINA-org/PINA-tutorials/raw/refs/heads/main/tutorial22/holed_poisson.pt" -O "holed_poisson.pt"')
 
 import torch
 from torch_geometric.nn import GMMConv
@@ -137,7 +137,7 @@ for g in range(num_graphs):
 # Convolutional neural networks are naturally suited to regular grids, but the domains in this dataset are represented by unstructured meshes. A graph representation removes the need for a regular grid: mesh points become nodes, and mesh connectivity becomes the edge structure. This makes a **graph neural network (GNN)** a suitable choice for processing the solution fields.
 # 
 # <p align="center">
-#     <img src="http://raw.githubusercontent.com/mathLab/PINA/master/tutorials/static/gca_off_on_3_pina.png" alt="GCA-ROM workflow" width="800"/>
+#     <img src="https://raw.githubusercontent.com/PINA-org/PINA-tutorials/main/static/gca_off_on_3_pina.png" alt="GCA-ROM workflow" width="800"/>
 # </p>
 # 
 # The reduced-order model has three components:

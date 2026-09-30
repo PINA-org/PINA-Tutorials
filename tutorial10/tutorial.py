@@ -3,7 +3,7 @@
 
 # # Tutorial: Solving the Kuramoto–Sivashinsky Equation with Averaging Neural Operator
 #
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mathLab/PINA/blob/master/tutorials/tutorial10/tutorial.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial10/tutorial.ipynb)
 #
 #
 # In this tutorial, we will build a Neural Operator using the **`AveragingNeuralOperator`** model and the **`SupervisedSolver`**. By the end of this tutorial, you will be able to train a Neural Operator to learn the operator for time-dependent PDEs.
@@ -25,10 +25,10 @@ if IN_COLAB:
     # get the data
     get_ipython().system('mkdir "data"')
     get_ipython().system(
-        'wget "https://github.com/mathLab/PINA/raw/refs/heads/master/tutorials/tutorial10/data/Data_KS.mat" -O "data/Data_KS.mat"'
+        'wget "https://github.com/PINA-org/PINA-tutorials/raw/refs/heads/main/tutorial10/data/Data_KS.mat" -O "data/Data_KS.mat"'
     )
     get_ipython().system(
-        'wget "https://github.com/mathLab/PINA/raw/refs/heads/master/tutorials/tutorial10/data/Data_KS2.mat" -O "data/Data_KS2.mat"'
+        'wget "https://github.com/PINA-org/PINA-tutorials/raw/refs/heads/main/tutorial10/data/Data_KS2.mat" -O "data/Data_KS2.mat"'
     )
 
 import torch
@@ -229,7 +229,7 @@ model = AveragingNeuralOperator(
 #
 # ## Solving the KS problem
 #
-# We will now focus on solving the KS equation using the `SupervisedSolver` class and the `AveragingNeuralOperator` model. As done in the [FNO tutorial](https://github.com/mathLab/PINA/blob/master/tutorials/tutorial5/tutorial.ipynb), we now create the Neural Operator problem class with `SupervisedProblem`.
+# We will now focus on solving the KS equation using the `SupervisedSolver` class and the `AveragingNeuralOperator` model. As done in the [FNO tutorial](https://github.com/PINA-org/PINA-tutorials/blob/main/tutorial5/tutorial.ipynb), we now create the Neural Operator problem class with `SupervisedProblem`.
 
 # In[ ]:
 

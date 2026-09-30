@@ -1,0 +1,47 @@
+[project]
+name = "pina-tutorials"
+version = "0.1.0"
+description = "Step-by-step tutorials for the PINA library."
+readme = "README.md"
+license = { text = "MIT" }
+keywords = [
+    "physics-informed-neural-networks",
+    "pinn",
+    "pytorch",
+    "tutorials",
+    "deep-learning",
+]
+
+# The tutorials import PINA itself; it is not vendored here. The exporter
+# workflow installs it from a git ref (see .github/workflows/exporter.yml).
+dependencies = [
+    "pina-mathlab",
+]
+
+[project.urls]
+Homepage = "https://mathlab.github.io/PINA/"
+Tutorials = "https://mathlab.github.io/PINA/_tutorial.html"
+Repository = "https://github.com/PINA-org/PINA-tutorials"
+"PINA (library)" = "https://github.com/PINA-org/PINA"
+
+# Extra dependencies needed to run the tutorials. Kept in sync with the
+# `tutorial` extra of the main PINA package.
+[project.optional-dependencies]
+tutorial = [
+    "jupyter",
+    "smithers",
+    "torchvision",
+    "tensorboard",
+    "scipy",
+    "numpy",
+]
+exporter = [
+    "jupyter",
+    "nbconvert",
+    "nbformat",
+    "ipykernel",
+    "black[jupyter]",
+]
+
+[tool.black]
+line-length = 80

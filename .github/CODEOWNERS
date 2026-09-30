@@ -1,0 +1,22 @@
+# CODEOWNERS file for PINA-Tutorials
+
+# Default owners for everything in the repo
+*                @mathLab/pina-developers
+
+# Tutorial content
+tutorial*/       @mathLab/pina-developers
+static/          @mathLab/pina-developers
+
+# Project-wide config
+pyproject.toml   @mathLab/pina-developers @ndem0
+.gitignore       @ndem0 @dario-coscia
+.gitattributes   @ndem0 @dario-coscia
+
+# Workflows
+.github/         @ndem0 @dario-coscia
+
+# Security & policy files
+LICENSE          @FilippoOlivo @GiovanniCanali @ndem0 @dario-coscia
+SECURITY.md      @FilippoOlivo @GiovanniCanali @ndem0 @dario-coscia
+CODE_OF_CONDUCT.md @FilippoOlivo @GiovanniCanali @ndem0 @dario-coscia
+MAINTAINERS.md   @FilippoOlivo @GiovanniCanali @ndem0 @dario-coscia

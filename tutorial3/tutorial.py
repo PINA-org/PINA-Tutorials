@@ -3,7 +3,7 @@
 
 # # Tutorial: Applying Hard Constraints in PINNs to solve the Wave Problem
 #
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mathLab/PINA/blob/master/tutorials/tutorial3/tutorial.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial3/tutorial.ipynb)
 #
 # In this tutorial, we will present how to solve the wave equation using **hard constraint Physics-Informed Neural Networks (PINNs)**. To achieve this, we will build a custom `torch` model and pass it to the **PINN solver**.
 #
