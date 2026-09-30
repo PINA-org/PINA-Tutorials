@@ -16,17 +16,13 @@ on:
     branches:
       - "main"
     paths:
-      - 'tutorial*/**/*.ipynb'
+      # Notebooks live exactly one level deep: tutorial<N>/tutorial.ipynb.
+      # Note that a '**/' segment would match nothing here.
+      - 'tutorial*/*.ipynb'
   schedule:
     # Nightly. Catches regressions in the PINA package that break a tutorial
     # without any notebook having changed.
     - cron: '30 3 * * *'
-  workflow_call:
-    inputs:
-      pina_ref:
-        description: "PINA ref to test the tutorials against"
-        required: false
-        default: "master"
 
 concurrency:
   group: export-tutorials-${{ github.ref }}
@@ -80,14 +76,16 @@ jobs:
         # are the consumer here, so they must be exercised against a real
         # PINA install rather than a local checkout.
         python3 -m pip install "pina-mathlab[tutorial] @ git+https://github.com/$PINA_REPO@${{ steps.config.outputs.pina_ref }}"
-        python3 -m pip install ".[exporter]"
+        # Installed directly rather than via '.[exporter]' so the workflow
+        # needs no build step for this repository.
+        python3 -m pip install nbconvert nbformat ipykernel "black[jupyter]"
         python3 -m pip list 2>/dev/null | grep -Ei "pina-mathlab|torch |lightning|nbconvert|black" || true
 
     - name: Report tested PINA version
       id: pina
       run: |
         set -euo pipefail
-        VER=$(python -c "import importlib.metadata as m; print(m.version('pina-mathlab'))")
+        VER=$(python3 -c "import importlib.metadata as m; print(m.version('pina-mathlab'))")
         echo "pina_version=$VER" >> "$GITHUB_OUTPUT"
         echo "Testing against pina-mathlab $VER"
 
@@ -99,7 +97,7 @@ jobs:
 
         if [ "${{ inputs.full_rebuild }}" = "true" ]; then
           FILES="$ALL"
-          echo "Full rebuild requested: $ALL" | wc -l | xargs echo "notebooks:"
+          echo "$ALL" | wc -l | xargs echo "notebooks (full rebuild):"
         elif [ "${{ github.event_name }}" = "push" ]; then
           BEFORE="${{ github.event.before }}"
           if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
@@ -129,21 +127,6 @@ jobs:
         git config user.name "github-actions[bot]"
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-    - name: Run formatter
-      # Formats the notebooks in place and keeps the committed notebook and
-      # the exported .py in sync with it.
-      run: |
-        set -euo pipefail
-        FILES="${{ steps.files.outputs.files }}"
-        if [ -n "$FILES" ]; then
-          # shellcheck disable=SC2086
-          python3 -m black $FILES
-        fi
-        python3 -m black --check . || {
-          echo "::error::black would reformat files outside the exported notebooks."
-          exit 1
-        }
-
     - name: Export notebooks to .py
       run: |
         set -euo pipefail
@@ -155,6 +138,16 @@ jobs:
           python3 -Xfrozen_modules=off -m jupyter nbconvert "$file" \
             --to python --output tutorial.py --output-dir "$dir"
         done
+
+    - name: Run formatter
+      # Runs *after* the .py export so the generated files are formatted too.
+      # The whole tree is formatted, not just the exported notebooks, so the
+      # --check below is guaranteed to agree with what black wants. The first
+      # run reformats the committed .py exports; afterwards this is a no-op.
+      run: |
+        set -euo pipefail
+        python3 -m black .
+        python3 -m black --check .
 
     - name: Execute notebooks into ${{ env.BUILD_DIR }}
       run: |
@@ -194,21 +187,30 @@ jobs:
 
     - name: Publish executed notebooks to the built branch
       if: steps.files.outputs.files != ''
+      env:
+        PINA_REF: ${{ steps.config.outputs.pina_ref }}
+        PINA_VERSION: ${{ steps.pina.outputs.pina_version }}
       run: |
         set -euo pipefail
 
         # Record what this snapshot was built from, so the documentation
         # repository can pin an immutable ref and report the version.
-        cat > "$BUILD_DIR/meta.json" <<EOF
-        {
-          "pina_ref": "${{ steps.config.outputs.pina_ref }}",
-          "pina_version": "${{ steps.pina.outputs.pina_version }}",
-          "built_from": "$GITHUB_SHA",
-          "built_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-          "run": "$GITHUB_RUN_ID"
+        PINA_REF="$PINA_REF" PINA_VERSION="$PINA_VERSION" GITHUB_SHA="$GITHUB_SHA" \
+        GITHUB_RUN_ID="$GITHUB_RUN_ID" \
+        python3 -c '
+        import datetime, json, os
+        meta = {
+            "pina_ref": os.environ["PINA_REF"],
+            "pina_version": os.environ["PINA_VERSION"],
+            "built_from": os.environ["GITHUB_SHA"],
+            "built_at": datetime.datetime.now(datetime.timezone.utc)
+                        .strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "run": os.environ["GITHUB_RUN_ID"],
         }
-        EOF
-        sed -i 's/^        //' "$BUILD_DIR/meta.json"
+        with open(os.environ["BUILD_DIR"] + "/meta.json", "w") as fh:
+            json.dump(meta, fh, indent=2)
+            fh.write("\n")
+        '
 
         # 'built' is an artefact branch: a self-contained snapshot, force
         # pushed. Consumers pin the tag below, never the branch.
@@ -217,12 +219,12 @@ jobs:
         git -C "$BUILD_DIR" config user.name "github-actions[bot]"
         git -C "$BUILD_DIR" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git -C "$BUILD_DIR" add -A
-        git -C "$BUILD_DIR" commit -q -m "executed tutorials for pina-mathlab ${{ steps.pina.outputs.pina_version }}"
+        git -C "$BUILD_DIR" commit -q -m "executed tutorials for pina-mathlab $PINA_VERSION"
         git -C "$BUILD_DIR" push -f \
           "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" \
           HEAD:refs/heads/built
 
-        TAG="pina-${{ steps.pina.outputs.pina_version }}-${{ github.run_id }}"
+        TAG="pina-$PINA_VERSION-${{ github.run_id }}"
         git -C "$BUILD_DIR" tag -f "$TAG"
         git -C "$BUILD_DIR" push -f \
           "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" \
@@ -234,7 +236,9 @@ jobs:
       run: rm -rf build/
 
     - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v6.0.0
+      # Commits the regenerated .py exports and any formatter changes back to
+      # main, so the source notebooks and their Python equivalents stay in sync.
+      uses: peter-evans/create-pull-request@v8.1.1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         labels: maintenance

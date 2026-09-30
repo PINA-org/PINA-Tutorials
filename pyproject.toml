@@ -45,3 +45,15 @@ exporter = [
 
 [tool.black]
 line-length = 80
+
+[tool.isort]
+profile = "black"
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+# This project is not importable; it only carries the dependency set and the
+# formatter configuration.
+py-modules = []
