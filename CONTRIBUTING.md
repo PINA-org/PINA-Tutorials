@@ -143,8 +143,7 @@ Every tutorial should:
   notebook). Long-running tutorials should reduce epochs or batch sizes.
 - Use only the dependencies declared in this repository's `pyproject.toml`.
 - Be committed with its outputs stripped. CI executes the notebook and
-  publishes the executed copy to the `built` branch for the documentation
-  build.
+  includes the generated HTML and Python exports in a maintenance PR.
 
 ## Contributing checklist
 
@@ -171,4 +170,5 @@ black .
 |-------|------------|
 | Tutorial content, notebooks, datasets | **this repository** |
 | Library behaviour, solvers, models, bugs | [PINA-org/PINA](https://github.com/PINA-org/PINA) |
-| Documentation build, rendering | [PINA-org/PINA](https://github.com/PINA-org/PINA) |
+| Tutorial documentation build, rendering | **this repository** |
+| Library/API documentation | [PINA-org/PINA](https://github.com/PINA-org/PINA) |

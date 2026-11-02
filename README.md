@@ -103,14 +103,14 @@ the result:
 
 * `tutorial<N>/tutorial.py` — a plain-Python export, committed to this
   repository through a `maintenance` pull request.
-* the **executed** notebook, pushed to the `built` branch, which the PINA
-  documentation build fetches and renders with
-  [nbsphinx](https://nbsphinx.readthedocs.io/) inside the `pydata_sphinx_theme`
-  site. This is why notebooks here are committed with their outputs stripped.
+* `docs/source/tutorials/tutorial<N>/tutorial.html` — an HTML export of the
+  executed notebook, included in the same pull request for the standalone
+  tutorial website. Deployment is configured separately.
 
-Because the executed notebooks are built by CI, a tutorial that no longer runs
-breaks the documentation build. The workflow runs on a nightly schedule as
-well as on pushes, so regressions in the PINA package are caught here.
+The exporter automatically generates Python scripts and executed HTML pages when
+notebooks change on `main`. Manual runs regenerate all tutorials. Notebooks run
+in their own directories to access local datasets, without saving execution
+outputs to the source notebooks. If execution fails, the export stops.
 
 ## See also
 
