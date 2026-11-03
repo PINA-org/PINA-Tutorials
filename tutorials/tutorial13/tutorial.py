@@ -3,7 +3,7 @@
 
 # # Tutorial: Learning Multiscale PDEs Using Fourier Feature Networks
 # 
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial13/tutorial.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorials/tutorial13/tutorial.ipynb)
 # 
 # This tutorial demonstrates how to solve a PDE with multiscale behavior using Physics-Informed Neural Networks (PINNs), as discussed in [*On the Eigenvector Bias of Fourier Feature Networks: From Regression to Solving Multi-Scale PDEs with Physics-Informed Neural Networks*](https://doi.org/10.1016/j.cma.2021.113938).
 # 
@@ -68,7 +68,7 @@ warnings.filterwarnings("ignore")
 # While this example is simple and pedagogical, it's important to note that the solution exhibits low-frequency behavior in the macro-scale and high-frequency behavior in the micro-scale. This characteristic is common in many practical scenarios.
 # 
 # Below is the implementation of the `Poisson` problem as described mathematically above.
-# > **👉 We have a dedicated [tutorial](https://mathlab.github.io/PINA/tutorial16/tutorial.html) to teach how to build a Problem from scratch — have a look if you're interested!**
+# > **👉 We have a dedicated [tutorial](https://PINA-org.github.io/PINA-Tutorials/tutorial16/tutorial.html) to teach how to build a Problem from scratch — have a look if you're interested!**
 
 # In[ ]:
 
@@ -113,7 +113,7 @@ problem.discretise_domain(2, "grid", domains="boundary")
 # 
 # However, solving high-frequency or multi-scale problems presents significant challenges to PINNs, especially when the number of data points is insufficient to capture the different scales effectively.
 # 
-# Below, we run a simulation using both the `PhysicsInformedSingleModelSolver` solver and the `SelfAdaptivePhysicsInformedSolver` solver, employing a [`FeedForward`](https://mathlab.github.io/PINA/_modules/pina/model/feed_forward.html#FeedForward) model.
+# Below, we run a simulation using both the `PhysicsInformedSingleModelSolver` solver and the `SelfAdaptivePhysicsInformedSolver` solver, employing a [`FeedForward`](https://PINA-org.github.io/PINA/_modules/pina/model/feed_forward.html#FeedForward) model.
 # 
 
 # In[ ]:
@@ -213,7 +213,7 @@ print(
 # 
 # where $\mathbf{B}_{ij} \sim \mathcal{N}(0, \sigma^2)$. This simple operation allows the network to learn across multiple scales!
 # 
-# In **PINA**, we have already implemented this feature as a `layer` called [`FourierFeatureEmbedding`](https://mathlab.github.io/PINA/_rst/layers/fourier_embedding.html). Below, we will build the *Multi-scale Fourier Feature Architecture*. In this architecture, multiple Fourier feature embeddings (initialized with different $\sigma$ values) are applied to the input coordinates. These embeddings are then passed through the same fully-connected neural network, and the outputs are concatenated with a final linear layer.
+# In **PINA**, we have already implemented this feature as a `layer` called [`FourierFeatureEmbedding`](https://PINA-org.github.io/PINA/_rst/layers/fourier_embedding.html). Below, we will build the *Multi-scale Fourier Feature Architecture*. In this architecture, multiple Fourier feature embeddings (initialized with different $\sigma$ values) are applied to the input coordinates. These embeddings are then passed through the same fully-connected neural network, and the outputs are concatenated with a final linear layer.
 # 
 
 # In[ ]:
@@ -289,4 +289,4 @@ print(
 # 
 # 4. **...and many more!**: There are countless directions to further explore, from testing on different problems to refining the model architecture.
 # 
-# For more resources and tutorials, check out the [PINA Documentation](https://mathlab.github.io/PINA/).
+# For more resources and tutorials, check out the [PINA Documentation](https://PINA-org.github.io/PINA/).

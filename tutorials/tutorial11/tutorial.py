@@ -2,9 +2,9 @@
 # coding: utf-8
 
 # # Tutorial: Introduction to `Trainer` class
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial11/tutorial.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorials/tutorial11/tutorial.ipynb)
 # 
-# In this tutorial, we will delve deeper into the functionality of the `Trainer` class, which serves as the cornerstone for training **PINA** [Solvers](https://mathlab.github.io/PINA/_rst/_code.html#solvers). 
+# In this tutorial, we will delve deeper into the functionality of the `Trainer` class, which serves as the cornerstone for training **PINA** [Solvers](https://PINA-org.github.io/PINA/_rst/_code.html#solvers). 
 # 
 # The `Trainer` class offers a plethora of features aimed at improving model accuracy, reducing training time and memory usage, facilitating logging visualization, and more thanks to the amazing job done by the PyTorch Lightning team!
 # 
@@ -92,7 +92,7 @@ trainer = Trainer(solver=solver, accelerator="cpu")
 
 # ## Trainer Logging
 # 
-# In **PINA** you can log metrics in different ways. The simplest approach is to use the `MetricTracker` class from `pina.callback`, as seen in the [*Introduction to Physics Informed Neural Networks training*](https://github.com/PINA-org/PINA-tutorials/blob/main/tutorial1/tutorial.ipynb) tutorial.
+# In **PINA** you can log metrics in different ways. The simplest approach is to use the `MetricTracker` class from `pina.callback`, as seen in the [*Introduction to Physics Informed Neural Networks training*](https://PINA-org.github.io/PINA-Tutorials/tutorial1/tutorial.html) tutorial.
 # 
 # However, especially when we need to train multiple times to get an average of the loss across multiple runs, `lightning.pytorch.loggers` might be useful. Here we will use `TensorBoardLogger` (more on [logging](https://lightning.ai/docs/pytorch/stable/extensions/logging.html) here), but you can choose the one you prefer (or make your own one).
 # 
@@ -355,5 +355,5 @@ print(f'Total training time {trainer.callbacks[0].time_elapsed("train"):.5f} s')
 # 
 # 4. **...and many more!**: Consider expanding to **multi-GPU** setups or other advanced configurations for large-scale training.
 # 
-# For more resources and tutorials, check out the [PINA Documentation](https://mathlab.github.io/PINA/).
+# For more resources and tutorials, check out the [PINA Documentation](https://PINA-org.github.io/PINA/).
 # 

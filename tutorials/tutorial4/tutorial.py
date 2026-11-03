@@ -2,10 +2,10 @@
 # coding: utf-8
 
 # # Tutorial:  Unstructured Convolutional Autoencoders with Continuous Convolution
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial4/tutorial.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorials/tutorial4/tutorial.ipynb)
 
 # In this tutorial, we will show how to use the Continuous Convolutional Filter, and how to build common Deep Learning architectures with it. The implementation of the filter follows the original work [*A Continuous Convolutional Trainable Filter for Modelling Unstructured Data*](https://arxiv.org/abs/2210.13416).
-#
+# 
 # First of all we import the modules needed for the tutorial:
 
 # In[ ]:
@@ -28,7 +28,7 @@ import warnings
 
 from pina import Trainer
 from pina.problem.zoo import SupervisedProblem
-from pina.solver import SupervisedSolver
+from pina.solver import SupervisedSingleModelSolver
 from pina.trainer import Trainer
 from pina.model.block import ContinuousConvBlock
 from pina.model import FeedForward  # for building AE and MNIST classification
@@ -37,76 +37,76 @@ warnings.filterwarnings("ignore")
 
 
 # ##  Tutorial Structure
-#
+# 
 # The tutorial is structured as follows:
-#
-# - [🔹 Continuous Filter Background](#continuous-filter-background):
+# 
+# - [🔹 Continuous Filter Background](#continuous-filter-background):  
 #   Understand how the convolutional filter works and how to use it.
-#
-# - [🔹 Building a MNIST Classifier](#building-a-mnist-classifier):
+# 
+# - [🔹 Building a MNIST Classifier](#building-a-mnist-classifier):  
 #   Learn how to build a simple classifier using the MNIST dataset, and how to combine a continuous convolutional layer with a feedforward neural network.
-#
-# - [🔹 Building a Continuous Convolutional Autoencoder](#building-a-continuous-convolutional-autoencoder):
+# 
+# - [🔹 Building a Continuous Convolutional Autoencoder](#building-a-continuous-convolutional-autoencoder):  
 #   Explore how to use the continuous filter to work with unstructured data for autoencoding and up-sampling.
-#
+# 
 
 # ## Continuous Filter Background
-#
+# 
 # As reported by the authors in the original paper, in contrast to discrete convolution, **continuous convolution** is mathematically defined as:
-#
+# 
 # $$
 #     \mathcal{I}_{\rm{out}}(\mathbf{x}) = \int_{\mathcal{X}}  \mathcal{I}(\mathbf{x} + \mathbf{\tau}) \cdot \mathcal{K}(\mathbf{\tau}) d\mathbf{\tau},
 # $$
-#
+# 
 # where:
 # - $\mathcal{K} : \mathcal{X} \rightarrow \mathbb{R}$ is the **continuous filter** function,
 # - $\mathcal{I} : \Omega \subset \mathbb{R}^N \rightarrow \mathbb{R}$ is the input function.
-#
+# 
 # The **continuous filter function** is approximated using a **FeedForward Neural Network**, which is **trainable** during the training phase. The way in which the integral is approximated can vary. In the **PINA** framework, we approximate it using a simple sum, as suggested by the authors. Thus, given the points $\{\mathbf{x}_i\}_{i=1}^{n}$ in $\mathbb{R}^N$ mapped onto the filter domain $\mathcal{X}$, we approximate the equation as:
-#
+# 
 # $$
 #     \mathcal{I}_{\rm{out}}(\mathbf{\tilde{x}}_i) = \sum_{{\mathbf{x}_i}\in\mathcal{X}}  \mathcal{I}(\mathbf{x}_i + \mathbf{\tau}) \cdot \mathcal{K}(\mathbf{x}_i),
 # $$
-#
+# 
 # where $\mathbf{\tau} \in \mathcal{S}$, with $\mathcal{S}$ being the set of available strides, represents the current stride position of the filter. The $\mathbf{\tilde{x}}_i$ points are obtained by taking the **centroid** of the filter position mapped onto the domain $\Omega$.
-#
+# 
 # ### Working with the Continuous Filter
-#
+# 
 # From the above definition, what is needed is:
 # 1. A **domain** and a **function** defined on that domain (the input),
 # 2. A **stride**, corresponding to the positions where the filter needs to be applied (this is the `stride` variable in `ContinuousConv`),
 # 3. The **filter's rectangular domain**, which corresponds to the `filter_dim` variable in `ContinuousConv`.
-#
+# 
 # ### Input Function
-#
+# 
 # The input function for the continuous filter is defined as a tensor of shape:
-#
+# 
 # $$[B \times N_{\text{in}} \times N \times D]$$
-#
+# 
 # where:
 # - $B$ is the **batch size**,
 # - $N_{\text{in}}$ is the number of input fields,
 # - $N$ is the number of points in the mesh,
-# - $D$ is the dimension of the problem.
-#
+# - $D$ is the dimension of the problem. 
+# 
 # In particular:
 # - $D$ represents the **number of spatial variables** + 1. The last column must contain the field value. For example, for 2D problems, $D=3$ and the tensor will look like `[first coordinate, second coordinate, field value]`.
 # - $N_{\text{in}}$ represents the number of vectorial functions presented. For example, a vectorial function $f = [f_1, f_2]$ will have $N_{\text{in}}=2$.
-#
+# 
 # #### Example: Input Function for a Vectorial Field
-#
+# 
 # Let’s see an example to clarify the idea. Suppose we wish to create the function:
-#
+# 
 # $$
 # f(x, y) = [\sin(\pi x) \sin(\pi y), -\sin(\pi x) \sin(\pi y)] \quad (x,y)\in[0,1]\times[0,1]
 # $$
-#
+# 
 # We can do this with a **batch size** equal to 1. This function consists of two components (vectorial field), so $N_{\text{in}}=2$. For each $(x,y)$ pair in the domain $[0,1] \times [0,1]$, we will compute the corresponding field values:
-#
+# 
 # 1. $\sin(\pi x) \sin(\pi y)$
 # 2. $-\sin(\pi x) \sin(\pi y)$
 
-# In[2]:
+# In[ ]:
 
 
 # batch size fixed to 1
@@ -139,9 +139,9 @@ print(f"Filter input data has shape: {data.shape}")
 
 
 # ### Stride
-#
+# 
 # The **stride** is passed as a dictionary `stride` that dictates where the filter should move. Here's an example for the domain $[0,1] \times [0,5]$:
-#
+# 
 # ```python
 # # stride definition
 # stride = {"domain": [1, 5],
@@ -155,13 +155,13 @@ print(f"Filter input data has shape: {data.shape}")
 # 2. `start`: The starting position of the filter's centroid. In this example, the filter starts at the position $(0, 0)$.
 # 3. `jump`: The steps or jumps of the filter’s centroid to the next position. In this example, the filter moves by $(0.1, 0.3)$ along the x and y axes respectively.
 # 4. `direction`: The directions of the jumps for each coordinate. A value of 1 indicates the filter moves right, 0 means no movement, and -1 indicates the filter moves left with respect to its current position.
-#
+# 
 # ### Filter definition
-#
+# 
 # Now that we have defined the stride, we can move on to construct the continuous filter.
 # Let’s assume we want the output to contain only one field, and we will set the filter dimension to be $[0.1, 0.1]$.
 
-# In[3]:
+# In[ ]:
 
 
 # filter dim
@@ -185,10 +185,10 @@ cConv = ContinuousConvBlock(
 
 
 # That's it! In just one line of code, we have successfully created the continuous convolutional filter. By default, the `pina.model.FeedForward` neural network is initialized, which can be further customized according to your needs.
-#
+# 
 # Additionally, if the mesh does not change during training, we can set the `optimize` flag to `True` to leverage optimizations for efficiently finding the points to convolve. This feature helps in improving the performance by reducing redundant calculations when the mesh remains constant.
 
-# In[4]:
+# In[ ]:
 
 
 # creating the filter + optimization
@@ -203,7 +203,7 @@ cConv = ContinuousConvBlock(
 
 # Let's try to do a forward pass:
 
-# In[5]:
+# In[ ]:
 
 
 print(f"Filter input data has shape: {data.shape}")
@@ -216,7 +216,7 @@ print(f"Filter output data has shape: {output.shape}")
 
 # If you don't want to use the default `FeedForward` neural network, you can pass a custom PyTorch model by specifying it in the `model` keyword. Here's an example of how to do it:
 
-# In[6]:
+# In[ ]:
 
 
 class SimpleKernel(torch.nn.Module):
@@ -244,13 +244,13 @@ cConv = ContinuousConvBlock(
 )
 
 
-# Notice that we pass the **class** of the model and not an already built object! This is important because the `ContinuousConv` filter will automatically instantiate the model class when needed during training.
-#
+# Notice that we pass the **class** of the model and not an already built object! This is important because the `ContinuousConv` filter will automatically instantiate the model class when needed during training. 
+# 
 # ## Building a MNIST Classifier
-#
+# 
 # Let's see how we can build a MNIST classifier using a continuous convolutional filter. We will use the MNIST dataset from PyTorch. In order to keep small training times we use only 6000 samples for training and 1000 samples for testing.
 
-# In[7]:
+# In[ ]:
 
 
 numb_training = 6000  # get just 6000 images for training
@@ -276,10 +276,10 @@ train_data = torchvision.datasets.MNIST(
 
 
 # Now, let's proceed to build a simple classifier for the MNIST dataset. The MNIST dataset consists of vectors with the shape `[batch, 1, 28, 28]`, but we can treat them as field functions where each pixel at coordinates $i,j$ corresponds to a point in a $[0, 27] \times [0, 27]$ domain. The pixel values represent the field values.
-#
+# 
 # To use the continuous convolutional filter, we need to transform the regular tensor into a format compatible with the filter. Here's a function that will help with this transformation:
 
-# In[8]:
+# In[ ]:
 
 
 def transform_input(x):
@@ -302,7 +302,7 @@ def transform_input(x):
 
 # We can now build a simple classifier! We will use just one convolutional filter followed by a feedforward neural network
 
-# In[9]:
+# In[ ]:
 
 
 # setting the seed
@@ -345,22 +345,25 @@ class ContinuousClassifier(torch.nn.Module):
         return self.nn(x[..., -1].flatten(1))
 
 
-# We now aim to solve a classification problem. For this we will use the `SupervisedSolver` and the `SupervisedProblem`. The input of the supervised problems are the images, while the output the corresponding class. We will train with `CrossEntropyLoss`.
+# We now aim to solve a classification problem. For this we will use the `SupervisedSingleModelSolver` and the `SupervisedProblem`. Because the supervised single-model solver works on prediction-target residuals, we encode the MNIST labels as one-hot vectors so their shape matches the 10-class output of the classifier. We then train with `MSELoss`.
 
 # In[ ]:
 
 
 # setting the problem
+train_targets = torch.nn.functional.one_hot(
+    train_data.train_labels, num_classes=10
+).float()
 problem = SupervisedProblem(
     input_=train_data.train_data.unsqueeze(1),  # adding channel dimension
-    output_=train_data.train_labels,
+    output_=train_targets,
 )
 
 # setting the solver
-solver = SupervisedSolver(
+solver = SupervisedSingleModelSolver(
     problem=problem,
     model=ContinuousClassifier(),
-    loss=torch.nn.CrossEntropyLoss(),
+    loss=torch.nn.MSELoss(),
     use_lt=False,
 )
 
@@ -380,7 +383,7 @@ trainer.train()
 
 # Let's see the performance on the test set!
 
-# In[11]:
+# In[ ]:
 
 
 correct = 0
@@ -390,6 +393,9 @@ with torch.no_grad():
     for data in trainer.data_module.test_dataloader():
         test_data = data["data"]
         images, labels = test_data["input"], test_data["target"]
+        # if targets are one-hot vectors, convert back to class indices
+        if labels.ndim > 1 and labels.shape[-1] > 1:
+            labels = labels.argmax(dim=1)
         # calculate outputs by running images through the network
         outputs = solver(images)
         # the class with the highest energy is what we choose as prediction
@@ -397,16 +403,16 @@ with torch.no_grad():
         total += labels.size(0)
         correct += (predicted == labels).sum().item()
 
-print(f"Accuracy of the network on the test images: {(correct / total):.3%}")
+print(f"Accuracy of the network on the test images: {(correct / total):.2%}")
 
 
 # As we can see we have very good performance for having trained only for 1 epoch! Nevertheless, we are still using structured data... Let's see how we can build an autoencoder for unstructured data now.
-#
+# 
 # ## Building a Continuous Convolutional Autoencoder
-#
+# 
 # As a toy problem, we will now build an autoencoder for the function \( f(x, y) = \sin(\pi x) \sin(\pi y) \) on the unit circle domain centered at \( (0.5, 0.5) \). We will also explore the ability to up-sample the results (once trained) without needing to retrain the model. To begin, we'll generate the input data for the function. First, we will use a mesh of 100 points and visualize the input function. Here’s how to proceed:
 
-# In[12]:
+# In[ ]:
 
 
 # create inputs
@@ -451,9 +457,9 @@ plt.show()
 
 
 # Now, let's create a simple autoencoder using the continuous convolutional filter. Since the data is inherently unstructured, a standard convolutional filter may not be effective without some form of projection or interpolation. We'll begin by building an `Encoder` and `Decoder` class, and then combine them into a unified `Autoencoder` class.
-#
+# 
 
-# In[13]:
+# In[ ]:
 
 
 class Encoder(torch.nn.Module):
@@ -520,7 +526,7 @@ class Decoder(torch.nn.Module):
 
 # Great! In the `Decoder` class, during the `forward` pass, we used the `.transpose()` method of the `ContinuousConvolution` class. This method takes the `weights` for upsampling and the `grid` on which to perform the upsampling. Now, let's go ahead and build the autoencoder! We'll define the hidden dimension with the `hidden_dimension` variable, and apply the sigmoid function on the output since the field values are constrained within the range $[0, 1]$.
 
-# In[14]:
+# In[ ]:
 
 
 class Autoencoder(torch.nn.Module):
@@ -540,7 +546,7 @@ class Autoencoder(torch.nn.Module):
         return out
 
 
-# Now, let's proceed with training the autoencoder by minimizing the mean squared error (MSE) loss and optimizing using the Adam optimizer. We'll use the `SupervisedSolver` for the training, and the problem will be defined as a simple problem inherited from `AbstractProblem`.
+# Now, let's proceed with training the autoencoder by minimizing the mean squared error (MSE) loss and optimizing using the Adam optimizer. We'll use the `SupervisedSingleModelSolver` for the training, and the problem will be defined as a simple problem inherited from `BaseProblem`.
 
 # In[ ]:
 
@@ -550,7 +556,7 @@ problem = SupervisedProblem(input_data, input_data)
 
 
 # define the solver
-solver = SupervisedSolver(
+solver = SupervisedSingleModelSolver(
     problem=problem,
     model=Autoencoder(),
     loss=torch.nn.MSELoss(),
@@ -572,7 +578,7 @@ trainer.train()
 
 # Now, let's visualize the real solution alongside the autoencoder's reconstruction, displaying them side by side for comparison!
 
-# In[16]:
+# In[ ]:
 
 
 solver.eval()
@@ -595,7 +601,7 @@ plt.show()
 
 # As observed, the two solutions are nearly identical! We can also compute the $l_2$ error between the real solution and the autoencoder's reconstruction quite easily:
 
-# In[17]:
+# In[ ]:
 
 
 def l2_error(input_, target):
@@ -608,12 +614,12 @@ print(f"l2 error: {l2_error(input_data[0, 0, :, -1], output[0, 0, :, -1]):.2%}")
 
 
 # The $l_2$ error is approximately $4\%$, which is quite low considering that we only use **one** convolutional layer and a simple feedforward network to reduce the dimension. Now, let's explore some of the unique features of the filter.
-#
+# 
 # ### Upsampling with the Filter
-#
+# 
 # Suppose we have a hidden representation and we want to upsample it on a different grid with more points. Let's see how we can achieve that:
 
-# In[18]:
+# In[ ]:
 
 
 # setting the seed
@@ -647,7 +653,7 @@ plt.show()
 
 # As we can see, we have a very good approximation of the original function, although some noise is present. Let's now calculate the error:
 
-# In[19]:
+# In[ ]:
 
 
 print(
@@ -656,15 +662,15 @@ print(
 
 
 # ## What's Next?
-#
+# 
 # Congratulations on completing the tutorial on using the Continuous Convolutional Filter in **PINA**! Now that you have the basics, there are several exciting directions you can explore:
-#
+# 
 # 1. **Train using Physics-Informed strategies**: Leverage physics-based knowledge to improve model performance for solving real-world problems.
-#
+# 
 # 2. **Use the filter to build an unstructured convolutional autoencoder**: Explore reduced-order modeling by implementing unstructured convolutional autoencoders.
-#
+# 
 # 3. **Experiment with upsampling at different resolutions**: Try encoding or upsampling on different grids to see how the model generalizes across multiple resolutions.
-#
+# 
 # 4. **...and many more!**: There are endless possibilities, from improving model architecture to testing with more complex datasets.
-#
-# For more resources and tutorials, check out the [PINA Documentation](https://mathlab.github.io/PINA/).
+# 
+# For more resources and tutorials, check out the [PINA Documentation](https://PINA-org.github.io/PINA/).

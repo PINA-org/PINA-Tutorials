@@ -2,13 +2,13 @@
 # coding: utf-8
 
 # # Tutorial: Introductory Tutorial:  Physics Informed Neural Networks with PINA 
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial1/tutorial.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorials/tutorial1/tutorial.ipynb)
 # 
 # > ##### ⚠️ ***Before starting:***
-# > We assume you are already familiar with the concepts covered in the [Getting started with PINA](https://mathlab.github.io/PINA/_tutorial.html#getting-started-with-pina) tutorials. If not, we strongly recommend reviewing them before exploring this advanced topic.
+# > We assume you are already familiar with the concepts covered in the [Getting started with PINA](https://PINA-org.github.io/PINA-Tutorials/#getting-started-with-pina) tutorials. If not, we strongly recommend reviewing them before exploring this advanced topic.
 # 
 
-# In this tutorial, we will demonstrate a typical use case of **PINA** for Physics-Informed training. We will cover the basics of training a `PhysicsInformedSingleModelSolver` with PINA, if you want to go further into Physics-Informed solvers look at our dedicated [tutorials](https://mathlab.github.io/PINA/_tutorial.html#physics-informed-neural-networks) on the topic.
+# In this tutorial, we will demonstrate a typical use case of **PINA** for Physics-Informed training. We will cover the basics of training a `PhysicsInformedSingleModelSolver` with PINA, if you want to go further into Physics-Informed solvers look at our dedicated [tutorials](https://PINA-org.github.io/PINA-Tutorials/#physics-informed-neural-networks) on the topic.
 # 
 # Let's start by importing the useful modules:
 
@@ -150,13 +150,13 @@ plt.show()
 # Once the problem is defined and the data is generated, we can move on to modeling. This process consists of three key steps:
 # 
 # **Choosing a Model**
-# - Select a neural network architecture. You can use the model we provide in the `pina.model` module (see [here](https://mathlab.github.io/PINA/_rst/_code.html#models) for a full list), or define a custom PyTorch module (more on this [here](https://pytorch.org/docs/stable/notes/modules.html)).
+# - Select a neural network architecture. You can use the model we provide in the `pina.model` module (see [here](https://PINA-org.github.io/PINA/_rst/_code.html#models) for a full list), or define a custom PyTorch module (more on this [here](https://pytorch.org/docs/stable/notes/modules.html)).
 # 
 # **Choosing a Physics-Informed Solver & Defining the Trainer**
-# * Use a Physics-Informed solver from `pina.solver` module to solve the problem using the specified model. We have already implemented most State-Of-The-Arte solvers for you, [have a look](https://mathlab.github.io/PINA/_rst/_code.html#solvers) if interested. Today we will use the standard `PhysicsInformedSingleModelSolver` solver.
+# * Use a Physics-Informed solver from `pina.solver` module to solve the problem using the specified model. We have already implemented most State-Of-The-Arte solvers for you, [have a look](https://PINA-org.github.io/PINA/_rst/_code.html#solvers) if interested. Today we will use the standard `PhysicsInformedSingleModelSolver` solver.
 # 
 # **Training**
-# * Train the model with the [`Trainer`](https://mathlab.github.io/PINA/_rst/trainer.html) class. The Trainer class provides powerful features to enhance model accuracy, optimize training time and memory, and simplify logging and visualization, thanks to PyTorch Lightning's excellent work, see [our dedicated tutorial](https://mathlab.github.io/PINA/tutorial11/tutorial.html) for further details. By default, training metrics (e.g., MSE error) are logged using a lightning logger (CSVLogger). If you prefer manual tracking, use `pina.callback.MetricTracker`.
+# * Train the model with the [`Trainer`](https://PINA-org.github.io/PINA/_rst/trainer.html) class. The Trainer class provides powerful features to enhance model accuracy, optimize training time and memory, and simplify logging and visualization, thanks to PyTorch Lightning's excellent work, see [our dedicated tutorial](https://PINA-org.github.io/PINA-Tutorials/tutorial11/tutorial.html) for further details. By default, training metrics (e.g., MSE error) are logged using a lightning logger (CSVLogger). If you prefer manual tracking, use `pina.callback.MetricTracker`.
 # 
 # Let's cover all steps one by one!
 # 
@@ -177,7 +177,7 @@ model = FeedForward(
 # Then we build the solver. The `PhysicsInformedSingleModelSolver` class needs to be initialized with a `model` and a specific `problem` to be solved. They also take extra arguments, as the optimizer, scheduler, loss type and weighting for the different conditions which are all set to their default values.
 # 
 # >##### 💡***Bonus tip:***
-# > All physics solvers in PINA can handle both forward and inverse problems without requiring any changes to the model or solver structure! See [our tutorial](https://mathlab.github.io/PINA/tutorial7/tutorial.html) of inverse problems for more infos.
+# > All physics solvers in PINA can handle both forward and inverse problems without requiring any changes to the model or solver structure! See [our tutorial](https://PINA-org.github.io/PINA-Tutorials/tutorial7/tutorial.html) of inverse problems for more infos.
 
 # In[ ]:
 
@@ -270,4 +270,4 @@ plt.show()
 # 
 # 5. **... and many more!**: The possibilities are vast! Continue experimenting with advanced configurations, solvers, and other features in PINA.
 # 
-# For more resources and tutorials, check out the [PINA Documentation](https://mathlab.github.io/PINA/).
+# For more resources and tutorials, check out the [PINA Documentation](https://PINA-org.github.io/PINA/).
