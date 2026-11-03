@@ -87,7 +87,7 @@ launched from the rendered documentation page.
 - Comment on data structure, format, and content.
 - Visualise key features of the dataset or simulation domain.
 
-If the dataset is small enough to ship, put it in `tutorial<N>/data/`. If it is
+If the dataset is small enough to ship, put it in `tutorials/tutorial<N>/data/`. If it is
 downloaded instead, use a `wget` guarded by `IN_COLAB` pointing at a file in
 this repository, rather than at a third-party host, so the link cannot rot.
 

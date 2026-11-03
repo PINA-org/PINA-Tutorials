@@ -11,7 +11,7 @@ on:
     branches:
       - "main"
     paths:
-      - 'tutorial*/tutorial.ipynb'
+      - 'tutorials/tutorial*/tutorial.ipynb'
   schedule:
     # Weekly full export to catch regressions in PINA: Mondays at 03:30 UTC.
     - cron: '30 3 * * 1'
@@ -63,7 +63,7 @@ jobs:
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
     - name: Run formatter
-      run: black tutorial*/
+      run: black tutorials/
 
     - name: Export tutorials to .py and .html
       env:
@@ -71,12 +71,12 @@ jobs:
       run: |
         set -euo pipefail
         for file in $FILES; do
-          if [[ "$file" == tutorial*/tutorial.ipynb ]]; then
+          if [[ "$file" == tutorials/tutorial*/tutorial.ipynb ]]; then
             filename=$(basename "$file")
             pyfilename="${filename%.ipynb}.py"
             htmlfilename="${filename%.ipynb}.html"
             dir=$(dirname "$file")
-            htmldir="docs/source/tutorials/$dir"
+            htmldir="docs/source/$dir"
             if [ ! -f "$file" ]; then
               rm -rf "$htmldir"
               continue
@@ -104,7 +104,7 @@ jobs:
         commit-message: "export tutorials changed in ${{ steps.short-sha.outputs.sha }}"
         delete-branch: true
         add-paths: |
-          tutorial*/
+          tutorials/
           docs/source/tutorials/
 
   # run on workflow_dispatch or the weekly schedule
@@ -142,17 +142,17 @@ jobs:
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
     - name: Run formatter
-      run: black tutorial*/
+      run: black tutorials/
 
     - name: Export all tutorials to .py and .html
       run: |
         set -euo pipefail
-        for file in $(find tutorial* -type f -name tutorial.ipynb | sort); do
+        for file in $(find tutorials -type f -name tutorial.ipynb | sort); do
           filename=$(basename "$file")
           pyfilename="${filename%.ipynb}.py"
           htmlfilename="${filename%.ipynb}.html"
           dir=$(dirname "$file")
-          htmldir="docs/source/tutorials/$dir"
+          htmldir="docs/source/$dir"
           timeout --signal=SIGKILL "$TUTORIAL_TIMEOUT" \
             python3 -Xfrozen_modules=off -m jupyter nbconvert "$file" \
             --to python --output "$pyfilename" --output-dir "$dir"
@@ -175,5 +175,5 @@ jobs:
         commit-message: "export tutorials changed in ${{ steps.short-sha.outputs.sha }}"
         delete-branch: true
         add-paths: |
-          tutorial*/
+          tutorials/
           docs/source/tutorials/
