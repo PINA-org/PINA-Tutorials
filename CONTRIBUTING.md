@@ -87,7 +87,7 @@ launched from the rendered documentation page.
 - Comment on data structure, format, and content.
 - Visualise key features of the dataset or simulation domain.
 
-If the dataset is small enough to ship, put it in `tutorial<N>/data/`. If it is
+If the dataset is small enough to ship, put it in `tutorials/tutorial<N>/data/`. If it is
 downloaded instead, use a `wget` guarded by `IN_COLAB` pointing at a file in
 this repository, rather than at a third-party host, so the link cannot rot.
 
@@ -124,7 +124,7 @@ Congratulations on completing the ..., here are a few directions you can explore
 
 3. **...and many more!** — Other suggestions ....
 
-For more resources and tutorials, check out the [PINA Documentation](https://mathlab.github.io/PINA/).
+For more resources and tutorials, check out the [PINA Documentation](https://PINA-org.github.io/PINA/).
 ```
 
 ## Writing style
@@ -143,8 +143,7 @@ Every tutorial should:
   notebook). Long-running tutorials should reduce epochs or batch sizes.
 - Use only the dependencies declared in this repository's `pyproject.toml`.
 - Be committed with its outputs stripped. CI executes the notebook and
-  publishes the executed copy to the `built` branch for the documentation
-  build.
+  includes the generated HTML and Python exports in a maintenance PR.
 
 ## Contributing checklist
 
@@ -171,4 +170,5 @@ black .
 |-------|------------|
 | Tutorial content, notebooks, datasets | **this repository** |
 | Library behaviour, solvers, models, bugs | [PINA-org/PINA](https://github.com/PINA-org/PINA) |
-| Documentation build, rendering | [PINA-org/PINA](https://github.com/PINA-org/PINA) |
+| Tutorial documentation build, rendering | **this repository** |
+| Library/API documentation | [PINA-org/PINA](https://github.com/PINA-org/PINA) |
