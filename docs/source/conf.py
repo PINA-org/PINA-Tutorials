@@ -63,7 +63,7 @@ intersphinx_mapping = {
 }
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = []
+templates_path = ["_templates"]
 
 # The suffix(es) of source filenames.
 source_suffix = ".rst"
@@ -111,6 +111,40 @@ html_theme = "pydata_sphinx_theme"
 # documentation.
 html_logo = "../../static/pina_logo.png"
 html_theme_options = {
+    "external_links": [
+        {
+            "name": "Quickstart",
+            "url": "https://pina-org.github.io/PINA/_quickstart.html",
+        },
+        {
+            "name": "API",
+            "url": "https://pina-org.github.io/PINA/_rst/_code.html",
+        },
+        {
+            "name": "Tutorials",
+            "url": "https://PINA-org.github.io/PINA-Tutorials/",
+        },
+        {
+            "name": "Contributing",
+            "url": "https://pina-org.github.io/PINA/_contributing.html",
+        },
+        {
+            "name": "Team & Fundings",
+            "url": "https://pina-org.github.io/PINA/_team.html",
+        },
+        {
+            "name": "Installing",
+            "url": "https://pina-org.github.io/PINA/_installation.html",
+        },
+        {
+            "name": "Cite PINA",
+            "url": "https://pina-org.github.io/PINA/_cite.html",
+        },
+        {
+            "name": "License",
+            "url": "https://pina-org.github.io/PINA/_LICENSE.html",
+        },
+    ],
     "icon_links": [
         {
             "name": "GitHub",
@@ -161,8 +195,7 @@ htmlhelp_basename = "pinatutorialsdoc"
 html_extra_path = ["tutorials"]
 
 html_static_path = ["_static"]
-# PINA's custom.css is not present in this repository.
-html_css_files = []
+html_css_files = ["custom.css"]
 
 # Avoid side bar for html files
 html_sidebars = {
