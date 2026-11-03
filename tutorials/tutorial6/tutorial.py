@@ -2,18 +2,18 @@
 # coding: utf-8
 
 # # Tutorial: Building domains with PINA's `BaseDomain` class
-#
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial6/tutorial.ipynb)
-#
+# 
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorials/tutorial6/tutorial.ipynb)
+# 
 # In this tutorial, we explore how to use and visualize PINA’s built-in geometric domains and how to construct custom ones. We will cover:
 # - Creating domains using `CartesianDomain`, `EllipsoidDomain`, and `SimplexDomain`
 # - Combining domains through set operations
 # - Defining custom domains
 # - Sampling from domains
-#
+# 
 # We begin by importing the necessary modules.
 
-# In[1]:
+# In[ ]:
 
 
 ## routine needed to run the notebook on Google Colab
@@ -39,12 +39,13 @@ from pina.domain import (
     BaseDomain,
 )
 
+
 # ## Built-in Geometries
 
 # We start with PINA’s built-in geometries. In particular, we define a Cartesian domain, an ellipsoid domain, and a simplex domain, all in two dimensions. Extending these constructions to higher dimensions follows the same principles.
 # The Cartesian domain represents rectangular regions, the ellipsoid domain models circular or elliptical shapes, and the simplex domain corresponds to triangular regions, which can be combined to form general polygonal domains.
 
-# In[2]:
+# In[ ]:
 
 
 # Carteisan, Ellipsoid, and Simplex domains
@@ -67,7 +68,7 @@ cartesian_fixed_variable = CartesianDomain({"x": [0, 2], "y": 1})
 
 # To visualize the shapes, we draw sample points from each domain using the `sample` method, available for all PINA domains. The argument `n` specifies how many points to generate. The optional `mode` argument selects the sampling strategy (e.g. "random"). The optional `variables` argument allows sampling over only a subset of variables; here, we sample all of them.
 
-# In[3]:
+# In[ ]:
 
 
 cartesian_samples = cartesian.sample(n=1000, mode="random")
@@ -78,7 +79,7 @@ fixed_variable_samples = cartesian_fixed_variable.sample(n=1000, mode="random")
 
 # We can inspect a few sampled points from each domain to get a better understanding of their structure.
 
-# In[4]:
+# In[ ]:
 
 
 print(f"Cartesian samples: {cartesian_samples[:4]}\n")
@@ -89,7 +90,7 @@ print(f"Fixed variable samples: {fixed_variable_samples[:4]}\n")
 
 # Now we are ready to visualize the sampled points!
 
-# In[5]:
+# In[ ]:
 
 
 # Basic plotting function
@@ -109,7 +110,7 @@ for ax, pts, title in zip(axs, pts_list, title_list):
 
 # Similarly, we can sample and visualize boundary points by using the `partial` method. This method returns a new domain representing only the boundary of the original one, from which we can draw samples in exactly the same way.
 
-# In[6]:
+# In[ ]:
 
 
 # Boundary definitions
@@ -145,7 +146,7 @@ for ax, pts, title in zip(axs, pts_list, title_list):
 # 2. `cartesian` and `ellipsoid_boundary`
 # 3. `ellipsoid` and `simplex_boundary`
 
-# In[7]:
+# In[ ]:
 
 
 union_cart_sim = Union([cartesian, simplex])
@@ -155,7 +156,7 @@ union_ell_sim_bnd = Union([ellipsoid, simplex_boundary])
 
 # And of course, we can sample points from these composite domains as well!
 
-# In[8]:
+# In[ ]:
 
 
 cart_sim_samples = union_cart_sim.sample(n=1000, mode="random")
@@ -165,7 +166,7 @@ ell_sim_bnd_samples = union_ell_sim_bnd.sample(n=1000, mode="random")
 
 # We can now plot the samples to visualize each union.
 
-# In[9]:
+# In[ ]:
 
 
 fig, axs = plt.subplots(1, 3, figsize=(16, 4))
@@ -187,7 +188,7 @@ for ax, pts, title in zip(axs, pts_list, title_list):
 # Custom domains in PINA can be created by inheriting from the `BaseDomain` class, which provides the general structure shared by all domains.
 # We begin by defining the constructor: we specify the available sampling modes ("random", "grid", "chebyshev", "latin" or "lh"). Here, we default to random sampling. We also introduce the parameter `sample_surface`, which determines whether we sample the full heart or only its boundary.
 
-# In[10]:
+# In[ ]:
 
 
 class Heart(BaseDomain):
@@ -209,7 +210,7 @@ class Heart(BaseDomain):
 
 # The `is_inside` method checks whether a given point lies inside the domain. It receives the point to test and the boolean `check_border`, which indicates whether points on the boundary should be considered inside.
 
-# In[11]:
+# In[ ]:
 
 
 def is_inside(self, point, check_border=False):
@@ -233,7 +234,7 @@ def is_inside(self, point, check_border=False):
 
 # The `sample` method closely resembles those of PINA’s built-in domains. We specify the number of points `n` and the sampling strategy mode. Note that for illustration we implement a very naive sampling approach, which is inefficient and not suitable for sampling boundary points for the heart domain!
 
-# In[12]:
+# In[ ]:
 
 
 def sample(self, n, mode="random"):
@@ -262,7 +263,7 @@ def sample(self, n, mode="random"):
 
 # The `partial` method returns a new instance of the domain class that represents only its boundary. Implementing it is straightforward.
 
-# In[13]:
+# In[ ]:
 
 
 def partial(self):
@@ -278,7 +279,7 @@ def partial(self):
 
 # We now have all the components needed to complete the `Heart` class.
 
-# In[14]:
+# In[ ]:
 
 
 # Linking the methods to the Heart class
@@ -292,7 +293,7 @@ Heart.__abstractmethods__ = frozenset()
 
 # Let’s generate the heart domain and draw sample points.
 
-# In[15]:
+# In[ ]:
 
 
 # Generate the heart domain
@@ -304,7 +305,7 @@ heart_samples = heart.sample(n=1000, mode="random")
 
 # Finally, we visualize the samples.
 
-# In[16]:
+# In[ ]:
 
 
 fig, ax = plt.subplots()
@@ -312,13 +313,13 @@ plot_scatter(ax, heart_samples, "Heart Domain")
 
 
 # ## What's Next?
-#
+# 
 # In this tutorial, we introduced the construction of custom geometries and the use of domain operations to combine basic shapes. From here, you can experiment with a wide range of possibilities:
-#
+# 
 # 1. **Build More Complex Geometries**: Combine multiple simple shapes using set operations to design sophisticated domains.
-#
+# 
 # 2. **Optimize for Specific Applications**: Tailor domain definitions for tasks such as fluid flow, heat transfer, or structural mechanics.
-#
+# 
 # 3. **...and many more!**: Implement new geometries using DomainInterface and push PINA’s capabilities further.
-#
-# For more resources and tutorials, check out the [PINA Documentation](https://mathlab.github.io/PINA/).
+# 
+# For more resources and tutorials, check out the [PINA Documentation](https://PINA-org.github.io/PINA/).

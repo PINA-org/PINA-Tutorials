@@ -3,7 +3,7 @@
 
 # # Tutorial: Reduced Order Modeling with POD-RBF and POD-NN Approaches for Fluid Dynamics
 # 
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial8/tutorial.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorials/tutorial8/tutorial.ipynb)
 
 # The goal of this tutorial is to demonstrate how to use the **PINA** library to apply a reduced-order modeling technique, as outlined in [1]. These methods share several similarities with machine learning approaches, as they focus on predicting the solution to differential equations, often parametric PDEs, in real-time.
 # 
@@ -289,7 +289,7 @@ plt.show()
 # 
 # 5. **...and many more!**: The potential applications of reduced order models are vast, ranging from material science simulations to real-time predictions in engineering applications.
 # 
-# For more information and advanced tutorials, refer to the [PINA Documentation](https://mathlab.github.io/PINA/).
+# For more information and advanced tutorials, refer to the [PINA Documentation](https://PINA-org.github.io/PINA/).
 # 
 # ### References
 # 1. Rozza G., Stabile G., Ballarin F. (2022). Advanced Reduced Order Methods and Applications in Computational Fluid Dynamics, Society for Industrial and Applied Mathematics. 

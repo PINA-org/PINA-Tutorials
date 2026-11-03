@@ -3,11 +3,11 @@
 
 # # Tutorial: Reduced Order Model with Graph Neural Networks
 # 
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial22/tutorial.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorials/tutorial22/tutorial.ipynb)
 # 
 # 
 # > ##### ⚠️ ***Before starting:***
-# > We assume you are already familiar with the concepts covered in the [Data Structure for SciML](https://mathlab.github.io/PINA/tutorial19/tutorial.html) tutorial. If not, we strongly recommend reviewing them before exploring this advanced topic.
+# > We assume you are already familiar with the concepts covered in the [Data Structure for SciML](https://PINA-org.github.io/PINA-Tutorials/tutorial19/tutorial.html) tutorial. If not, we strongly recommend reviewing them before exploring this advanced topic.
 # 
 # In this tutorial, we use **PINA** to construct a graph-based reduced-order model for a parametrized partial differential equation. The workflow is largely inspired by [*A graph convolutional autoencoder approach to model order reduction for parametrized PDEs*](https://www.sciencedirect.com/science/article/pii/S0021999124000111).
 # 
@@ -32,7 +32,7 @@ except:
     IN_COLAB = False
 if IN_COLAB:
     get_ipython().system('pip install "pina-mathlab[tutorial]"')
-    get_ipython().system('wget "https://github.com/PINA-org/PINA-tutorials/raw/refs/heads/main/tutorial22/holed_poisson.pt" -O "holed_poisson.pt"')
+    get_ipython().system('wget "https://github.com/PINA-org/PINA-tutorials/raw/refs/heads/main/tutorials/tutorial22/holed_poisson.pt" -O "holed_poisson.pt"')
 
 import torch
 from torch_geometric.nn import GMMConv
@@ -273,7 +273,7 @@ class GraphConvolutionalAutoencoder(torch.nn.Module):
 # 
 # We now train the autoencoder with PINA's supervised-learning workflow.
 # 
-# First, we define a [`SupervisedProblem`](https://mathlab.github.io/PINA/_rst/problem/zoo/supervised_problem.html#module-pina.problem.zoo.supervised_problem):
+# First, we define a [`SupervisedProblem`](https://PINA-org.github.io/PINA/_rst/problem/zoo/supervised_problem.html#module-pina.problem.zoo.supervised_problem):
 # 
 # - **input:** graph objects containing the solution fields and mesh information;
 # - **target:** the original node-wise solution values that the autoencoder must reconstruct.
@@ -516,4 +516,4 @@ plt.show()
 # 
 # 3. **...and many more!** — The possibilities are vast! Continue experimenting with advanced configurations, solvers, and features in PINA.
 # 
-# For more resources and tutorials, check out the [PINA Documentation](https://mathlab.github.io/PINA/).
+# For more resources and tutorials, check out the [PINA Documentation](https://PINA-org.github.io/PINA/).

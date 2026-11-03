@@ -3,7 +3,7 @@
 
 # # Tutorial: How to build a Problem in PINA
 # 
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial16/tutorial.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorials/tutorial16/tutorial.ipynb)
 # 
 
 # In this tutorial, we will demonstrate how to build a **Problem** in **PINA** using a toy example. The tutorial will cover the following topics:
@@ -60,9 +60,9 @@ warnings.filterwarnings("ignore")
 # 
 #     # other stuff ...
 # ```
-# Observe that we define `input_variables` and `output_variables` as lists of symbols. This is because, in PINA, `torch.Tensors` can be labeled (see [`LabelTensor`](https://mathlab.github.io/PINA/_rst/label_tensor.html)), providing maximum flexibility for tensor manipulation. If you prefer to use regular tensors, you can simply set these to ``None``.
+# Observe that we define `input_variables` and `output_variables` as lists of symbols. This is because, in PINA, `torch.Tensors` can be labeled (see [`LabelTensor`](https://PINA-org.github.io/PINA/_rst/label_tensor.html)), providing maximum flexibility for tensor manipulation. If you prefer to use regular tensors, you can simply set these to ``None``.
 # 
-# To specify the input and target data, you need to use the [`Condition`](https://mathlab.github.io/PINA/_rst/condition/condition.html) interface. A condition defines the constraints (such as physical equations, boundary conditions, etc.) that must be satisfied within the problem. Once the condition is applied, the full problem is outlined below:
+# To specify the input and target data, you need to use the [`Condition`](https://PINA-org.github.io/PINA/_rst/condition/condition.html) interface. A condition defines the constraints (such as physical equations, boundary conditions, etc.) that must be satisfied within the problem. Once the condition is applied, the full problem is outlined below:
 
 # In[ ]:
 
@@ -102,7 +102,7 @@ problem = SupervisedProblem()
 problem.are_all_domains_discretised
 
 
-# >👉 **You can use multiple data structures in PINA conditions, including `Graph` or `Data` from `PyG`. To explore the different data structures available in PINA, check out [this tutorial](), and for more information on input-target conditions, visit the conditions factory classes [here](https://mathlab.github.io/PINA/_rst/condition/input_target_condition.html)**.
+# >👉 **You can use multiple data structures in PINA conditions, including `Graph` or `Data` from `PyG`. To explore the different data structures available in PINA, check out [this tutorial](https://PINA-org.github.io/PINA-Tutorials/tutorial19/tutorial.html), and for more information on input-target conditions, visit the conditions factory classes [here](https://PINA-org.github.io/PINA/_rst/condition/input_target_condition.html)**.
 
 # ### Simple Ordinary Differential Equation
 # What if we don't have data but we know the physical laws that define the data? Then physics-informed training is the solution! As an example, consider the following Ordinary Differential Equation (ODE):
@@ -120,7 +120,7 @@ problem.are_all_domains_discretised
 # * `SpatialProblem` $\rightarrow$ a differential equation with spatial variable(s)
 # * `TimeDependentProblem` $\rightarrow$ a time-dependent differential equation with temporal variable(s)
 # * `ParametricProblem` $\rightarrow$ a parametrized differential equation with parametric variable(s)
-# * `InverseProblem` $\rightarrow$ this is a more advanced topic, see [this tutorial](https://mathlab.github.io/PINA/tutorial7/tutorial.html) for more details.
+# * `InverseProblem` $\rightarrow$ this is a more advanced topic, see [this tutorial](https://PINA-org.github.io/PINA-Tutorials/tutorial7/tutorial.html) for more details.
 # 
 # In our case, the physical ODE inherits from the `SpatialProblem` class, since only spatial variables define the ODE.
 # 
@@ -146,7 +146,7 @@ problem.are_all_domains_discretised
 #     # other stuff ...
 # ```
 # 
-# Differently from data-driven problems, differential-problems need to specify the domain type. If you look at our ODE definition, the spatial varibale $x$ is defined in the interval $(0,1)$, and accordingly the `spatial_domain` is a `CartesianDomain` with the input variable `x` in `[0,1]`. To know more about the Domain class see the [related tutorial](https://mathlab.github.io/PINA/tutorial6/tutorial.html). Different problems require different domain, here below we summarize the relevant ones:
+# Differently from data-driven problems, differential-problems need to specify the domain type. If you look at our ODE definition, the spatial varibale $x$ is defined in the interval $(0,1)$, and accordingly the `spatial_domain` is a `CartesianDomain` with the input variable `x` in `[0,1]`. To know more about the Domain class see the [related tutorial](https://PINA-org.github.io/PINA-Tutorials/tutorial6/tutorial.html). Different problems require different domain, here below we summarize the relevant ones:
 # 
 # | Problem Type            | Required Domain                |
 # |-------------------------|--------------------------------|
@@ -201,17 +201,17 @@ class SimpleODE(SpatialProblem):
         return torch.exp(pts.extract(["x"]))
 
 
-# As you can see, we implemented the `ode_equation` function which given the model ouput and input returns the equation residual. These residuals are the ones minimized during PINN optimization (for more on PINN see [the related tutorials](https://mathlab.github.io/PINA/_tutorial.html#physics-informed-neural-networks)). 
+# As you can see, we implemented the `ode_equation` function which given the model ouput and input returns the equation residual. These residuals are the ones minimized during PINN optimization (for more on PINN see [the related tutorials](https://PINA-org.github.io/PINA-Tutorials/#physics-informed-neural-networks)). 
 # 
 # How are the residuals computed?
-# Given the output we perform differential operation using the [operator modulus](https://mathlab.github.io/PINA/_rst/operator.html). It is pretty intuitive, each differential operator takes the following inputs: 
+# Given the output we perform differential operation using the [operator modulus](https://PINA-org.github.io/PINA/_rst/operator.html). It is pretty intuitive, each differential operator takes the following inputs: 
 # - A tensor on which the operator is applied. 
 # - A tensor with respect to which the operator is computed. 
 # - The names of the output variables for which the operator is evaluated. 
 # - The names of the variables with respect to which the operator is computed.
 # We also have a `fast` version of differential operators, where no checks are performed. This can be used to boost performances, once you know the standard ones are doing their job. 
 # 
-# Notice that we do not pass directly a `python` function, but an `Equation` object, which is initialized with the `python` function. This is done so that all the computations and internal checks are done inside **PINA**, see [the related tutorials](https://mathlab.github.io/PINA/tutorial12/tutorial.html) for more.
+# Notice that we do not pass directly a `python` function, but an `Equation` object, which is initialized with the `python` function. This is done so that all the computations and internal checks are done inside **PINA**, see [the related tutorials](https://PINA-org.github.io/PINA-Tutorials/tutorial12/tutorial.html) for more.
 # 
 # Once we have defined the function, we need to tell the neural network where these methods are to be applied. To do so, we use again the `Condition` class. In the `Condition` class, we pass the location points and the equation we want minimized on those points.
 # 
@@ -289,7 +289,7 @@ plt.show()
 
 # ## The Problem Zoo module
 # 
-# In PINA many problems are already implemented for you in the [Problem Zoo module](https://mathlab.github.io/PINA/_rst/_code.html#problems-zoo). For example, the supervised problem at the beginning of the tutorial is implemented in [`SupervisedProblem`](https://mathlab.github.io/PINA/_rst/problem/zoo/supervised_problem.html)!
+# In PINA many problems are already implemented for you in the [Problem Zoo module](https://PINA-org.github.io/PINA/_rst/_code.html#problems-zoo). For example, the supervised problem at the beginning of the tutorial is implemented in [`SupervisedProblem`](https://PINA-org.github.io/PINA/_rst/problem/zoo/supervised_problem.html)!
 # 
 # Let's see now a physics based example, the advection equation
 
@@ -317,8 +317,8 @@ print(
 # 
 # 1. **Create Custom Problems**: Try building your own problems using the PINA framework, experiment with different PDEs, initial/boundary conditions, and data structures.
 # 
-# 2. **Explore the Problem Zoo**: Dive into the [`problem.zoo` module](https://mathlab.github.io/PINA/_rst/_code.html#problems-zoo) to find a variety of predefined problem setups and use them as a starting point or inspiration for your own.
+# 2. **Explore the Problem Zoo**: Dive into the [`problem.zoo` module](https://PINA-org.github.io/PINA/_rst/_code.html#problems-zoo) to find a variety of predefined problem setups and use them as a starting point or inspiration for your own.
 # 
 # 3. **...and many more!**: The possibilities are vast! Consider experimenting with different solver strategies, model architectures, or even implementing your own physical constraints.
 # 
-# For more examples and in-depth guides, be sure to check out the [PINA Documentation](https://mathlab.github.io/PINA/).
+# For more examples and in-depth guides, be sure to check out the [PINA Documentation](https://PINA-org.github.io/PINA/).
