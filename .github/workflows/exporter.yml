@@ -104,7 +104,8 @@ jobs:
         commit-message: "export tutorials changed in ${{ steps.short-sha.outputs.sha }}"
         delete-branch: true
         add-paths: |
-          tutorials/
+          tutorials/tutorial*/tutorial.ipynb
+          tutorials/tutorial*/tutorial.py
           docs/source/tutorials/
 
   # run on workflow_dispatch or the weekly schedule
@@ -175,5 +176,6 @@ jobs:
         commit-message: "export tutorials changed in ${{ steps.short-sha.outputs.sha }}"
         delete-branch: true
         add-paths: |
-          tutorials/
+          tutorials/tutorial*/tutorial.ipynb
+          tutorials/tutorial*/tutorial.py
           docs/source/tutorials/

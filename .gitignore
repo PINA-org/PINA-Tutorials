@@ -3,9 +3,10 @@
 build/
 nbconvert*.log
 
-# Training logs written by Lightning during local runs
+# Training logs written by Lightning during local or CI runs
 tutorial_logs/
 **tutorial_logs
+lightning_logs/
 
 # Python
 __pycache__/
