@@ -42,6 +42,10 @@ exporter = [
     "ipykernel",
     "black[jupyter]",
 ]
+docs = [
+    "sphinx",
+    "pydata-sphinx-theme",
+]
 
 [tool.black]
 line-length = 80
