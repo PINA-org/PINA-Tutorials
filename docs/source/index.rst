@@ -1,5 +1,5 @@
 Welcome to the PINA Tutorials
-============================
+========================================
 
 This site collects step-by-step tutorials to help you understand the principles and potential of **PINA**.
 Whether you are just getting started or looking to deepen your understanding, these resources will guide you.
@@ -8,7 +8,7 @@ For installation instructions and API documentation, visit the
 `PINA documentation <https://PINA-org.github.io/PINA/>`_.
 
 Getting started with PINA
-------------------------
+----------------------------------------
 
 - `Introductory Tutorial: A Beginner's Guide to PINA <https://PINA-org.github.io/PINA-Tutorials/tutorial17/tutorial.html>`_
 - `How to build a Problem in PINA <https://PINA-org.github.io/PINA-Tutorials/tutorial16/tutorial.html>`_
@@ -30,7 +30,7 @@ Physics Informed Neural Networks
 - `Learning Bifurcating PDE Solutions with Physics-Informed Deep Ensembles <https://PINA-org.github.io/PINA-Tutorials/tutorial14/tutorial.html>`_
 
 Neural Operator Learning
------------------------
+----------------------------------------
 
 - `Introductory Tutorial: Neural Operator Learning with PINA <https://PINA-org.github.io/PINA-Tutorials/tutorial21/tutorial.html>`_
 - `Modeling 2D Darcy Flow with the Fourier Neural Operator <https://PINA-org.github.io/PINA-Tutorials/tutorial5/tutorial.html>`_
