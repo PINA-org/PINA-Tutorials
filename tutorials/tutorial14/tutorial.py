@@ -3,7 +3,7 @@
 
 # # Tutorial: Learning Bifurcating PDE Solutions with Physics-Informed Deep Ensembles
 # 
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial14/tutorial.ipynb)
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorials/tutorial14/tutorial.ipynb)
 # 
 # This tutorial demonstrates how to use the Deep Ensemble Physics Informed Network (DeepEnsemblePINN) to learn PDEs exhibiting bifurcating behavior, as discussed in [*Learning and Discovering Multiple Solutions Using Physics-Informed Neural Networks with Random Initialization and Deep Ensemble*](https://arxiv.org/abs/2503.06320).
 # 
@@ -95,9 +95,9 @@ warnings.filterwarnings("ignore")
 # 
 # We first write the problem class, we do not write the boundary conditions as we will hard impose them.
 # 
-# > **👉 We have a dedicated [tutorial](https://mathlab.github.io/PINA/tutorial16/tutorial.html) to teach how to build a Problem — have a look if you're interested!**
+# > **👉 We have a dedicated [tutorial](https://PINA-org.github.io/PINA-Tutorials/tutorial16/tutorial.html) to teach how to build a Problem — have a look if you're interested!**
 # 
-# > **👉 We have a dedicated [tutorial](https://mathlab.github.io/PINA/tutorial3/tutorial.html) to teach how to impose hard constraints — have a look if you're interested!**
+# > **👉 We have a dedicated [tutorial](https://PINA-org.github.io/PINA-Tutorials/tutorial3/tutorial.html) to teach how to impose hard constraints — have a look if you're interested!**
 
 # In[ ]:
 
@@ -288,4 +288,4 @@ with torch.no_grad():
 # 
 # 3. **...and many more!**: There are countless directions to further explore, for example, what does it happen when you vary the network initialization hyperparameters?
 # 
-# For more resources and tutorials, check out the [PINA Documentation](https://mathlab.github.io/PINA/).
+# For more resources and tutorials, check out the [PINA Documentation](https://PINA-org.github.io/PINA/).

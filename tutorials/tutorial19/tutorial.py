@@ -2,13 +2,13 @@
 # coding: utf-8
 
 # # Tutorial: Data structure for SciML: `Tensor`, `LabelTensor`, `Data` and `Graph`
-#
-# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorial19/tutorial.ipynb)
-#
+# 
+# [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/PINA-org/PINA-tutorials/blob/main/tutorials/tutorial19/tutorial.ipynb)
+# 
 # In this tutorial, we’ll quickly go through the basics of Data Structures for Scientific Machine Learning, convering:
 # 1. **PyTorch Tensors** / **PINA LabelTensors**
 # 2. **PyTorch Geometric Data** / **PINA Graph**
-#
+# 
 # first let's import the data structures we will use!
 
 # In[ ]:
@@ -32,13 +32,14 @@ warnings.filterwarnings("ignore")
 
 from pina import LabelTensor, Graph
 
+
 # ## PyTorch Tensors
-#
+# 
 # A **tensor** is a multi-dimensional matrix used for storing and manipulating data in PyTorch. It's the basic building block for all computations in PyTorch, including deep learning models.
-#
+# 
 # You can create a tensor in several ways:
 
-# In[2]:
+# In[ ]:
 
 
 # Creating a tensor from a list
@@ -61,7 +62,7 @@ print(tensor_random)
 # ### Basic Tensor Operations
 # Tensors support a variety of operations, such as element-wise arithmetic, matrix operations, and more:
 
-# In[4]:
+# In[ ]:
 
 
 # Addition
@@ -77,7 +78,7 @@ elementwise_prod = tensor_1 * tensor_1
 # ### Device Management
 # PyTorch allows you to move tensors to different devices (CPU or GPU). For instance:
 
-# In[6]:
+# In[ ]:
 
 
 # Move tensor to GPU
@@ -88,16 +89,16 @@ if torch.cuda.is_available():
 # To know more about PyTorch Tensors, see the dedicated tutorial done by the PyTorch team [here](https://pytorch.org/tutorials/beginner/introyt/tensors_deeper_tutorial.html).
 
 # ## Label Tensors
-#
-# In scientific machine learning, especially when working with **Physics-Informed Neural Networks (PINNs)**, handling tensors effectively is crucial. Often, we deal with many indices that represent physical quantities such as spatial and temporal coordinates, making it vital to ensure we use the correct indexing.
-#
-# For instance, in PINNs, if the wrong index is used to represent the coordinates of a physical domain, it could lead to incorrect calculations of derivatives, integrals, or residuals. This can significantly affect the accuracy and correctness of the model.
-#
+# 
+# In scientific machine learning, especially when working with **Physics-Informed Solvers**, handling tensors effectively is crucial. Often, we deal with many indices that represent physical quantities such as spatial and temporal coordinates, making it vital to ensure we use the correct indexing.
+# 
+# For instance, if the wrong index is used to represent the coordinates of a physical domain, it could lead to incorrect calculations of derivatives, integrals, or residuals. This can significantly affect the accuracy and correctness of the model.
+# 
 # ### What are Label Tensors?
-#
+# 
 # **Label Tensors** are a specialized type of tensor used to keep track of indices that represent specific labels. Similar to torch tensor we can perform operation, but the slicing is simplified by using indeces:
 
-# In[7]:
+# In[ ]:
 
 
 # standard torch tensor
@@ -108,14 +109,14 @@ label_tensor = LabelTensor(tensor, labels=["x", "y"])
 
 
 # The label tensor is initialized by passing the tensor, and a set of labels. Specifically, the labels must match the following conditions:
-#
+# 
 # - At each dimension, the number of labels must match the size of the dimension.
 # - At each dimension, the labels must be unique.
-#
+# 
 # For example:
-#
+# 
 
-# In[9]:
+# In[ ]:
 
 
 # full labels
@@ -128,7 +129,7 @@ tensor = LabelTensor(torch.rand((2000, 3)), ["a", "b", "c"])
 
 # You can access last column labels by `.labels` attribute, or using `.full_labels` to access all labels
 
-# In[10]:
+# In[ ]:
 
 
 print(f"{tensor.labels=}")
@@ -136,12 +137,12 @@ print(f"{tensor.full_labels=}")
 
 
 # ### Label Tensors slicing
-#
-# One of the powerful features of label tensors is the ability to easily slice and extract specific parts of the tensor based on labels, just like regular PyTorch tensors but with the ease of labels.
-#
+# 
+# One of the powerful features of label tensors is the ability to easily slice and extract specific parts of the tensor based on labels, just like regular PyTorch tensors but with the ease of labels. 
+# 
 # Here’s how slicing works with label tensors. Suppose we have a label tensor that contains both spatial and temporal data, and we want to slice specific parts of this data to focus on certain time intervals or spatial regions.
 
-# In[26]:
+# In[ ]:
 
 
 # Create a label tensor containing spatial and temporal coordinates
@@ -163,7 +164,7 @@ print(f"Similarly to: \n {label_tensor[:, 0]=}")
 
 # You can do more complex slicing by using the extract method. For example:
 
-# In[30]:
+# In[ ]:
 
 
 label_tensor = LabelTensor(
@@ -180,19 +181,19 @@ print(f"Similar to: {label_tensor[slice(0, 4, 2), :]=}")
 
 # ## PyTorch Geometric Data
 # PyTorch Geometric (PyG) extends PyTorch to handle graph-structured data. It provides utilities to represent graphs and perform graph-based learning tasks such as node classification, graph classification, and more.
-#
+# 
 # ### Graph Data Structure
 # PyTorch Geometric uses a custom `Data` object to store graph data. The `Data` object contains the following attributes:
-#
+# 
 # - **x**: Node features (tensor of shape `[num_nodes, num_features]`)
-#
+# 
 # - **edge_index**: Edge indices (tensor of shape `[2, num_edges]`), representing the graph's connectivity
-#
+# 
 # - **edge_attr**: Edge features (optional, tensor of shape `[num_edges, num_edge_features]`)
-#
+# 
 # - **y**: Target labels for nodes/graphs (optional)
 
-# In[32]:
+# In[ ]:
 
 
 # Node features: [2 nodes, 3 features]
@@ -209,7 +210,7 @@ print(data)
 
 # Once you have your graph in a Data object, you can easily perform graph-based operations using PyTorch Geometric’s built-in functions:
 
-# In[33]:
+# In[ ]:
 
 
 # Accessing node features
@@ -228,10 +229,10 @@ print(out)  # Output node features after applying GCN
 
 
 # ## PINA Graph
-#
+# 
 # If you've understood Label Tensors and Data in PINA, then you're well on your way to grasping how **PINA Graph** works. Simply put, a **Graph** in PINA is a `Data` object with extra methods for handling label tensors. We highly suggest to use `Graph` instead of `Data` in PINA, expecially when using label tensors.
 
-# In[36]:
+# In[ ]:
 
 
 # Node features: [2 nodes, 3 features]
@@ -262,7 +263,7 @@ print(out)  # Output node features after applying GCN
 
 # But we can also use labeltensors....
 
-# In[40]:
+# In[ ]:
 
 
 # Node features: [2 nodes, 3 features]
@@ -295,13 +296,13 @@ input_[0]
 
 
 # ## What's Next?
-#
+# 
 # Congratulations on completing the tutorials on the **PINA Data Structures**! You now have a solid foundation in using the different data structures within PINA, such as **Tensors**, **Label Tensors**, and **Graphs**. Here are some exciting next steps you can take to continue your learning journey:
-#
-# 1. **Deep Dive into Label Tensors**: Check the documentation of [`LabelTensor`](https://mathlab.github.io/PINA/_rst/label_tensor.html) to learn more about the available methods.
-#
-# 2. **Working with Graphs in PINA**: In PINA we implement many graph structures, e.g. `KNNGraph`, `RadiusGraph`, .... see [here](https://mathlab.github.io/PINA/_rst/_code.html#graphs-structures) for further details.
-#
-# 3. **...and many more!**: Consider exploring `LabelTensor` for PINNs!
-#
-# For more resources and tutorials, check out the [PINA Documentation](https://mathlab.github.io/PINA/).
+# 
+# 1. **Deep Dive into Label Tensors**: Check the documentation of [`LabelTensor`](https://PINA-org.github.io/PINA/_rst/label_tensor.html) to learn more about the available methods.
+# 
+# 2. **Working with Graphs in PINA**: In PINA we implement many graph structures, e.g. `KNNGraph`, `RadiusGraph`, .... see [here](https://PINA-org.github.io/PINA/_rst/_code.html#graphs-structures) for further details.
+# 
+# 3. **...and many more!**: Consider exploring `LabelTensor` for Physics-Informed Solvers!
+# 
+# For more resources and tutorials, check out the [PINA Documentation](https://PINA-org.github.io/PINA/).
