@@ -36,13 +36,15 @@ extensions = [
     "sphinx.ext.coverage",
     "sphinx.ext.viewcode",
     "sphinx.ext.mathjax",
-    "sphinx.ext.intersphinx",
+    "sphinx_design",
+    "nbsphinx",
+    "nbsphinx_link",
 ]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ["build", "docstrings", "nextgen", "Thumbs.db", ".DS_Store", "**/.gitkeep"]
+exclude_patterns = ["build", "docstrings", "nextgen", "Thumbs.db", ".DS_Store", "**/.gitkeep", "guides/*/index.rst"]
 
 # The reST default role (used for this markup: `text`) to use for all documents.
 default_role = "literal"
@@ -66,7 +68,10 @@ intersphinx_mapping = {
 templates_path = ["_templates"]
 
 # The suffix(es) of source filenames.
-source_suffix = ".rst"
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.ipynb': 'jupyter_notebook',
+}
 
 # The master toctree document.
 master_doc = "index"
@@ -165,8 +170,13 @@ html_theme_options = {
             "type": "fontawesome",
         },
     ],
-    "show_prev_next": False,
+    "show_prev_next": True,
+    "collapse_navigation": False,
+    "navigation_depth": 2,
+    "show_nav_level": 1,
+    "sidebar_includehidden": True,
     "navbar_start": ["navbar-logo"],
+    "navbar_center": ["external-nav"],
     "navbar_end": ["navbar-icon-links"],
     "header_links_before_dropdown": 5,
 }
@@ -191,16 +201,13 @@ html_show_copyright = True
 # Output file base name for HTML help builder.
 htmlhelp_basename = "pinatutorialsdoc"
 
-# Link to external html files
-html_extra_path = ["tutorials"]
+# Tutorial pages are Sphinx sources, not files to copy verbatim.
+html_extra_path = []
 
 html_static_path = ["_static"]
 html_css_files = ["custom.css"]
 
-# Avoid side bar for html files
-html_sidebars = {
-    "index": [],
-}
+html_sidebars = {"**": ["sidebar-collapse", "global-sidebar-nav"]}
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -257,3 +264,14 @@ autodoc_member_order = "bysource"
 
 # Do consider meth ending with _ (needed for in-place methods of torch)
 strip_signature_backslash = True
+
+# -- nbsphinx configuration ------------------------------------------------
+
+# Render outputs already saved in the notebooks without executing them.
+nbsphinx_execute = "never"
+
+# Custom CSS for notebooks
+nbsphinx_codecell_lexer = "python3"
+
+# Show link to source notebook
+nbsphinx_show_notebook_link = True
