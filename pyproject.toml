@@ -45,6 +45,9 @@ exporter = [
 docs = [
     "sphinx",
     "pydata-sphinx-theme",
+    "sphinx-design",
+    "nbsphinx-link",
+    "ipykernel",
 ]
 
 [tool.black]
