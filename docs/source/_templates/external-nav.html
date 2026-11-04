@@ -1,0 +1,7 @@
+<nav aria-label="{{ _('PINA links') }}">
+  <ul class="navbar-nav">
+    {% for link in theme_external_links %}
+    <li class="nav-item"><a class="nav-link nav-external" href="{{ link.url }}">{{ link.name }}</a></li>
+    {% endfor %}
+  </ul>
+</nav>
